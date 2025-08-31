@@ -24,6 +24,7 @@ const BlogPage = () => {
                 <img src={blog1} alt="img" />
               </div>
               <div className="p-6">
+                <div className="w-[855px] h-5 rotate-0 opacity-100 text-sm text-gray-500 mb-4 space-x-4">Grocery</div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-4 leading-tight">
                 But I must explain to you how all this mistaken
 idea</h2>
