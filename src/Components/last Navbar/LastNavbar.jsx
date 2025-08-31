@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 function LastNavbar() {
-  const [open, setOpen] = useState(false); // كاتيجوري
-  const [menuOpen, setMenuOpen] = useState(false); // منيو الموبايل
+  const [open, setOpen] = useState(false); 
+  const [menuOpen, setMenuOpen] = useState(false); 
 
   return (
     <nav className="bg-white border-b border-gray-200 dark:bg-gray-900 mt-3 relative">
       <div className="max-w-screen-xl flex items-center justify-between mx-auto p-3">
         
-        {/* زرار الكاتيجوري */}
+       
         <div className="relative">
           <button
             onClick={() => setOpen(!open)}
@@ -36,7 +36,7 @@ function LastNavbar() {
 
           {open && (
             <div className="absolute top-full left-0 mt-2 z-20 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-              <ul className="py-2 text-sm text-gray-700 dark:text-gray-400">
+              <ul className="py-2 text-md text-gray-700 dark:text-gray-400">
                 <li>
                   <a
                     href="#"
@@ -58,7 +58,7 @@ function LastNavbar() {
           )}
         </div>
 
-        {/* زرار المينيو للموبايل */}
+       
         <button
           className="md:hidden text-2xl text-[#35AFA0]"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -66,7 +66,7 @@ function LastNavbar() {
           <i className="fas fa-bars"></i>
         </button>
 
-        {/* اللينكات - ديسكتوب */}
+     
         <ul className="hidden md:flex items-center gap-24 mx-auto cursor-pointer">
           <li className="hover:text-[#2D978A] hover:bg-gray-100 p-2 rounded-lg">
             <NavLink to={"/"}>Home</NavLink>
@@ -83,7 +83,7 @@ function LastNavbar() {
         </ul>
       </div>
 
-      {/* اللينكات - موبايل */}
+      
       {menuOpen && (
         <ul className="flex flex-col md:hidden bg-gray-50 border-t border-gray-200 p-4 space-y-3 text-sm font-medium uppercase cursor-pointer">
           <li className="hover:text-[#2D978A] hover:bg-gray-100 p-2 rounded-lg">

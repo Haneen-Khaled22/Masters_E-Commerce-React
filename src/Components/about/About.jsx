@@ -5,7 +5,7 @@ import marginImg from "../../assets/Margin.png";
 function About() {
 
   return (
-    <div className="flex flex-col gap-10 mt-20 w-full">
+    <div className="flex flex-col gap-10  w-full">
       {/* Section 1 – Hero Image */}
     
         <div className="w-full relative">
