@@ -12,7 +12,7 @@ function Layout() {
             <FirstNavbar/>
             <NavBar/>
             <LastNavbar/>
-            <div className="container">
+            <div>
                 <Outlet></Outlet>
             </div>
             <Footer/>

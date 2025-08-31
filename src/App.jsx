@@ -34,6 +34,7 @@ function App() {
         {path:"blog",element:<Blog/>},
         {path:"contact",element:<Contact/>},
         {path:"about",element:<About/>},
+        {path:"blog",element:<Blog/>},
         {path:"*",element:<NotFound/>},
 
       ]
