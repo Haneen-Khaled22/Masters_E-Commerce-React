@@ -18,7 +18,70 @@ body {
 
 }
 
+
 .container {
   @apply mx-auto px-12 py-4; 
        
 }
+
+/* خلى الـ dots جوا الصورة */
+.slick-dots {
+  position: absolute !important;
+  bottom: 20px !important; /* المسافة من تحت */
+  left: 10% !important;
+  transform: translateX(-50%);
+  z-index: 15;
+}
+
+/* لون و حجم النقاط */
+.slick-dots li button:before {
+  color: black !important;   /* غيّر اللون حسب الخلفية */
+  font-size: 6px !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Style slick arrows */
+/* غير لون السهم */
+/* اظهر السهام وخليهم قدام */
+.best-sellers-slider .slick-prev,
+.best-sellers-slider .slick-next {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  background: white !important;
+  border-radius: 50% !important;
+  width: 35px !important;
+  height: 35px !important;
+  z-index: 50 !important;
+}
+
+/* لون السهم */
+.best-sellers-slider .slick-prev:before,
+.best-sellers-slider .slick-next:before {
+  color: black !important;
+  font-size: 23px !important;
+  opacity: 1 !important;
+}
+
+/* مكان الأسهم */
+.best-sellers-slider .slick-prev {
+  left: -45px !important;
+}
+.best-sellers-slider .slick-next {
+  right: -45px !important;
+}
+
+
+
