@@ -22,20 +22,22 @@ import {CartProvider} from "./Context/CartContext";
 function App() {
   let router = createBrowserRouter([
     {
-      path: "",
-      element: <Layout />,
-      children: [
-        { index: true, element: <Home /> },
-        { path: "login", element: <Login /> },
-        { path: "register", element: <Register /> },
-        { path: "about", element: <About /> },
-        { path: "shop", element: <Shop /> },
-        { path: "blog", element: <Blog /> },
-        { path: "contact", element: <Contact /> },
-        { path: "*", element: <NotFound /> },
-      ],
-    },
-  ]);
+      path:"",
+      element:<Layout/>,
+      children:[
+        {index:true,element:<Home/>},
+        {path:"login",element:<Login/>},
+        {path:"register",element:<Register/>},
+        {path:"about",element:<About/>},
+        {path:"shop",element:<Shop/>},
+        {path:"blog",element:<Blog/>},
+        {path:"contact",element:<Contact/>},
+        {path:"*",element:<NotFound/>},
+
+      ]
+    }
+  ])
+  
 
   return (
     <>

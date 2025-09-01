@@ -58,9 +58,9 @@ function NavBar() {
   {/* Cart Icon */}
   <div className="relative w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-red-400 hover:bg-gray-200 cursor-pointer">
     <i className="fa-solid fa-bag-shopping text-[17px]"></i>
-    {/* <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full px-1.5">
+    <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-1.5 w-4 h-4">
       0
-    </span> */}
+    </span>
   </div>
 </div>
 
