@@ -5,6 +5,7 @@ import sidepanner1 from "../../assets/SidePanner1 (2).png";
 import sidepanner2 from "../../assets/SidePanner2 (2).png";
 import pannerBox from "../../assets/banner-box2.png";
 import HotProductCard from "../HotProductCard/HotProductCard";
+import NewProducts from "../NewProducts/NewProducts";
 
 function Home() {
   return (
@@ -93,6 +94,7 @@ function Home() {
     Use discount code in checkout!
   </p>
 </div>
+<NewProducts/>
 
 
         </div>

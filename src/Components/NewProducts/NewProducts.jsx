@@ -35,23 +35,12 @@ function NewProducts() {
         </div>
         <div>
           <Link to="/shop">
-            <button className="group flex items-center gap-2 px-5 py-2 text-[#9B9BB4] border border-[#D9D9E9] rounded-full hover:bg-[#D9D9E9] hover:text-[#202435] transition cursor-pointer text-[12px] font-medium font-['Inter'] leading-[18px] -tracking-[0.1px]">
-              View More
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </button>
+            <button className="flex items-center gap-2 text-xs sm:text-sm md:text-base text-gray-500 border border-gray-400 rounded-3xl px-3 py-1.5 sm:px-4 sm:py-2 cursor-pointer hover:bg-gray-400 hover:text-white transition">
+  View all
+  <span className="transition">
+    <i className="fa-solid fa-arrow-right"></i>
+  </span>
+</button>
           </Link>
         </div>
       </div>
