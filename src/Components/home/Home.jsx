@@ -7,6 +7,7 @@ import pannerBox from "../../assets/banner-box2.png";
 import HotProductCard from "../HotProductCard/HotProductCard";
 import NewProducts from "../NewProducts/NewProducts";
 import download from "../../assets/download.png";
+import Categories from "../Categories/Categories";
 function Home() {
   return (
     // <div>home</div>
@@ -141,7 +142,9 @@ function Home() {
           </div>
           <NewProducts />
         </div>
+        
       </div>
+      <Categories/>
     </div>
   );
 }
