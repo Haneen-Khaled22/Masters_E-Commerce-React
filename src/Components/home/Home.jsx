@@ -7,6 +7,8 @@ import pannerBox from "../../assets/banner-box2.png";
 import HotProductCard from "../HotProductCard/HotProductCard";
 import NewProducts from "../NewProducts/NewProducts";
 import download from "../../assets/download.png";
+import WeekendDiscount from "../WeekendDiscount/WeekendDiscount";
+import TrendingProducts from "../TrendingProducts/TrendingProducts";
 function Home() {
   return (
     // <div>home</div>
@@ -14,7 +16,7 @@ function Home() {
       <HomeSlider />
       <div className="mt-5 flex gap-3 max-w-7xl justify-center">
         <div className="w-1/4 ml-8 hidden lg:block">
-        {/* {panners} */}
+          {/* {panners} */}
           <div className="relative w-3/4 h-[400px] mt-4 mb-6">
             <img
               src={sidepanner1}
@@ -77,12 +79,11 @@ function Home() {
                   <img src={download} />
                   <h2>Download the Bacola App to your Phone.</h2>
                 </div>
-                
               </li>
             </ul>
           </div>
           {/* trending search */}
-          <div></div>
+          <TrendingProducts />
           {/* customer comment */}
           <div></div>
         </div>
@@ -140,6 +141,7 @@ function Home() {
             </p>
           </div>
           <NewProducts />
+          <WeekendDiscount />
         </div>
       </div>
     </div>
