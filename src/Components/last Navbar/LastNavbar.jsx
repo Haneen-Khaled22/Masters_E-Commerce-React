@@ -1,5 +1,14 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
+import beverages from "../../assets/beverages.svg"
+import biscuits from "../../assets/biscuits.svg"
+import breads from "../../assets/breads.svg"
+import breakfast from "../../assets/breakfast.svg"
+import frozen from "../../assets/frozenfood.svg"
+import fruits from "../../assets/fruits.svg"
+import grocery from "../../assets/grocery.svg"
+import meats from "../../assets/meats.svg"
+
 
 function LastNavbar() {
   const [open, setOpen] = useState(false); 
@@ -35,24 +44,58 @@ function LastNavbar() {
           </button>
 
           {open && (
-            <div className="absolute top-full left-0 mt-2 z-20 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+            <div className="absolute top-full left-0 mt-2 z-20 bg-white divide-y divide-gray-100 rounded-lg shadow w-50 dark:bg-gray-700 dark:divide-gray-600">
               <ul className="py-2 text-md text-gray-700 dark:text-gray-400">
-                <li>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    Arabic
-                  </a>
+                <li className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                  
+                    <img src={beverages}/>
+                    Beverages
+                
                 </li>
-                <li>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    English
-                  </a>
+                <li className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                  
+                    <img src={biscuits}/>
+                    Biscuits & Snacks
+                
                 </li>
+                <li className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                  
+                    <img src={breads}/>
+                    Breads & Bakery
+                
+                </li>
+                <li className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                  
+                    <img src={breakfast}/>
+                    Breakfast & Dairy
+                
+                </li>
+                <li className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                  
+                    <img src={frozen}/>
+                    Frozen Foods
+                
+                </li>
+                <li className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                  
+                    <img src={fruits}/>
+                    Fruits & Vegetables
+                
+                </li>
+                <li className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                  
+                    <img src={grocery}/>
+Grocery & Staples                
+                </li>
+                <li className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                  
+                    <img src={meats}/>
+Meats & Seafood               
+                </li>
+                <hr className="text-gray-300 mt-2 mb-2 "/>
+                <li className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Value of the day</li>
+                <li className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Top 100 Offers</li>
+                <li className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">New Arrivals</li>
               </ul>
             </div>
           )}

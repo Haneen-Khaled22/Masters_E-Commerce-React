@@ -66,8 +66,23 @@ function BestSellers() {
 
   return (
     <div >
-      <h1 className='font-bold mt-3'>Best Sellers</h1>
+      <div className='flex justify-between items-center'>
+        <div>
+          <h1 className='font-bold mt-3'>Best Sellers</h1>
       <p className='text-gray-400 text-sm mb-3'>Do not miss the current offers until the end of March.</p>
+
+        </div>
+       <button className="flex items-center gap-2 text-xs sm:text-sm md:text-base text-gray-500 border border-gray-400 rounded-3xl px-3 py-1.5 sm:px-4 sm:py-2 cursor-pointer hover:bg-gray-400 hover:text-white transition">
+  View all
+  <span className="transition">
+    <i className="fa-solid fa-arrow-right"></i>
+  </span>
+</button>
+
+        
+
+      </div>
+      
 
 <div className="best-sellers-slider border border-gray-200 p-4 rounded-lg">
    <Slider {...settings} className='w-full px-2'>
@@ -156,7 +171,8 @@ function BestSellers() {
 
 
 </div>
-      {/* <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 border-1 border-gray-200 p-4 rounded-lg"> */}
+     
+     
         
       </div>
       
