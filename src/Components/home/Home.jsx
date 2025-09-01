@@ -10,8 +10,8 @@ import download from "../../assets/download.png";
 
 import Categories from "../Categories/Categories";
 
-// import WeekendDiscount from "../WeekendDiscount/WeekendDiscount";
-// import TrendingProducts from "../TrendingProducts/TrendingProducts";
+import WeekendDiscount from "../WeekendDiscount/WeekendDiscount";
+import TrendingProducts from "../TrendingProducts/TrendingProducts";
 
 function Home() {
   return (
@@ -86,10 +86,10 @@ function Home() {
           </div>
           {/* trending search */}
           <div className="mt-4 relative w-3/4">
-            {/* <TrendingProducts /> */}
+            <TrendingProducts />
           </div>
           {/* customer comment */}
-          {/* <div className="mt-4 relative w-3/4 ml-0">
+          <div className="mt-4 relative w-3/4 ml-0">
             <h2 className="text-lg font-semibold text-[#202435] uppercase tracking-tight mb-4 mt-10">
               Customer Comment
             </h2>
@@ -359,7 +359,7 @@ function Home() {
                 </div>
               </div>
             </div>
-          </div> */}
+          </div>
         </div>
 
         <div className="w-2/3">
@@ -415,7 +415,7 @@ function Home() {
             </p>
           </div>
           <NewProducts />
-          {/* <WeekendDiscount /> */}
+          <WeekendDiscount />
         </div>
         
       </div>
