@@ -20,7 +20,7 @@ body {
 
 
 .container {
-  @apply mx-auto px-12 py-4; 
+  @apply mx-auto px-10 py-4; 
        
 }
 

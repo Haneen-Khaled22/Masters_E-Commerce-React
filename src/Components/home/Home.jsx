@@ -18,8 +18,8 @@ function Home() {
     // <div>home</div>
     <div>
       <HomeSlider />
-      <div className="mt-5 flex gap-3 max-w-6xl justify-center">
-        <div className="w-1/3 ml-8 hidden lg:block">
+      <div className="mt-5 flex container justify-center">
+        <div className="w-1/4  hidden lg:block">
           {/* {panners} */}
           <div className="relative w-3/4 h-[400px] mt-4 mb-6">
             <img
@@ -362,7 +362,7 @@ function Home() {
           </div>
         </div>
 
-        <div className="w-2/3">
+        <div className="w-3/4 ">
           <BestSellers />
           {/* PANNER WITH IMAGE */}
           <div className="relative bg-[#F8EFEA] h-[150px] mt-4 mb-6 rounded-lg flex justify-end items-center">
@@ -418,8 +418,13 @@ function Home() {
           <WeekendDiscount />
         </div>
         
+        
       </div>
-      <Categories/>
+      <div className="container">
+        <Categories/>
+      </div>
+      
+      
     </div>
   );
 }
