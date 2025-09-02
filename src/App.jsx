@@ -7,11 +7,11 @@ import Home from './Components/home/Home';
 import Login from './Components/login/Login';
 import Register from './Components/register/Register';
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import About from './Components/about/About';
-import Shop from './Components/shop/Shop';
-import Blog from './Components/Blog/Blog';
-import Contact from './Components/Contact/Contact';
-import NotFound from './Components/NotFound/NotFound';
+import About from './Components/about/About'
+import Shop from './Components/shop/Shop'
+import Blog from './Components/Blog/Blog'
+import Contact from './Components/Contact/Contact'
+import NotFound from './Components/NotFound/NotFound'
 import 'flowbite';
 
 // ✅ استدعاء الـ Context
@@ -34,6 +34,8 @@ function App() {
         {path:"blog",element:<Blog/>},
         {path:"contact",element:<Contact/>},
         {path:"productdetails",element:<ProductDetails/>},
+        {path:"about",element:<About/>},
+        {path:"blog",element:<Blog/>},
         {path:"*",element:<NotFound/>},
 
       ]
