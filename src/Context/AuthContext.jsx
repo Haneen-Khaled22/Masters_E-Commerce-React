@@ -1,11 +1,14 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "../Helper/supabase-client";
 
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+
+
 
   useEffect(() => {
     // check current session
@@ -31,6 +34,8 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     await supabase.auth.signOut();
     setUser(null);
+    
+    
   };
 
   return (

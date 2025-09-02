@@ -1,7 +1,34 @@
-import React from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import logo from "../../assets/Link - Bacola Store.png";
+import userphoto from "../../assets/user.png"
+import { useAuth } from "../../Context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function NavBar() {
+  const [open, setOpen] = useState(false);
+  const menuRef = useRef(null);
+
+  let {user,logout} = useAuth();
+  let navigate = useNavigate();
+
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  async function handleLogout(){
+    await logout();
+    navigate('/login');
+    console.log('logged out');
+    toast.success('logged out successfully');
+  }
   return (
     <div>
       <nav className="bg-white border-gray-200 dark:bg-gray-900  border-t-1">
@@ -50,9 +77,38 @@ function NavBar() {
           {/* Right: Icons (Cart, Profile, etc.) */}
   <div className="flex items-center space-x-3">
   {/* Profile Icon */}
-  <div className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer">
-    <i className="fa-regular fa-user text-[17px]"></i>
-  </div>
+ <div className="relative" ref={menuRef}>
+      {/* أيقونة المستخدم */}
+      <div
+        className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer"
+        onClick={() => setOpen(!open)}
+      >
+        <i className="fa-regular fa-user text-[17px]"></i>
+      </div>
+
+      {/* القائمة */}
+      {open && (
+        <div className="absolute right-0  w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 p-2 flex flex-col items-center gap-3">
+          {/* صورة البروفايل */}
+          <img
+            src={userphoto}
+            alt="Profile"
+            className="w-16 h-16 rounded-full object-cover"
+          />
+
+          {/* الإيميل */}
+          <p className="text-sm text-gray-700 text-center">
+           {user ? user.email :"Guest"}
+          </p>
+
+          {/* زرار اللوج آوت */}
+          <button onClick={handleLogout}
+          className="w-full py-2 text-sm text-red-600 font-medium hover:bg-gray-100 rounded-md">
+            Logout
+          </button>
+        </div>
+      )}
+    </div>
 
 <span className="font-normal">0.00$</span>
   {/* Cart Icon */}
