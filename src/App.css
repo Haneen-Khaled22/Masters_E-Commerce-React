@@ -20,15 +20,15 @@ body {
 
 
 .container {
-  @apply mx-auto px-12 py-4; 
+  @apply mx-auto px-10 py-4; 
        
 }
 
 /* خلى الـ dots جوا الصورة */
 .slick-dots {
   position: absolute !important;
-  bottom: 20px !important; /* المسافة من تحت */
-  left: 10% !important;
+  bottom: 30px !important; /* المسافة من تحت */
+  left: 30% !important;
   transform: translateX(-50%);
   z-index: 15;
 }

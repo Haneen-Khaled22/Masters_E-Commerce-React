@@ -1,3 +1,4 @@
+// Login code
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../../Helper/supabase-client";
@@ -50,7 +51,7 @@ function Login() {
 
   return (
     <div className="container">
-      <form className="max-w-sm mx-auto mt-6" onSubmit={handleLogin}>
+      <form className="max-w-sm mx-auto mt-20" onSubmit={handleLogin}>
         <h3 className="mb-8 text-3xl font-bold text-[#2E9C8E]">Login</h3>
         <div className="mb-5">
           <label

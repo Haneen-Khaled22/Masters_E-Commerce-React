@@ -1,3 +1,4 @@
+// Register code
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../../Helper/supabase-client';
@@ -43,7 +44,7 @@ function Register() {
 
     return (
          <div className="container">
-      <form className="max-w-sm mx-auto mt-6" onSubmit={handleRegister}>
+      <form className="max-w-sm mx-auto mt-20" onSubmit={handleRegister}>
         <h3 className="mb-8 text-3xl font-bold text-[#2E9C8E]">Register</h3>
         <div className="mb-5">
           <label
