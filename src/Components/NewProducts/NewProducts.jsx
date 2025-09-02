@@ -57,12 +57,15 @@ function NewProducts() {
             className={`bg-white relative flex flex-col h-[350px] px-3 pt-5 justify-between 
               border-r border-b border-gray-200`}
           >
+            
             {p.offer && (
               <div className="absolute top-4 left-2 bg-[#35AFA0] text-white text-xs font-bold px-2 py-1 rounded">
                 {p.offer}%
               </div>
             )}
 
+            <Link to={'/productdetails'}>
+          
             <div className="flex flex-col flex-grow space-y-2">
               <img
                 src={p.image}
@@ -108,7 +111,9 @@ function NewProducts() {
                 )}
                 <span className="text-[#D51243] font-bold">${p.price}</span>
               </div>
+              
             </div>
+              </Link>
           </div>
         ))}
       </div>

@@ -18,6 +18,7 @@ import 'flowbite';
 // import {  } from "./context/AuthContext";
 import {AuthProvider} from "./Context/AuthContext";
 import {CartProvider} from "./Context/CartContext";
+import ProductDetails from './Components/ProductDetails/ProductDetails';
 
 function App() {
   let router = createBrowserRouter([
@@ -32,6 +33,7 @@ function App() {
         {path:"shop",element:<Shop/>},
         {path:"blog",element:<Blog/>},
         {path:"contact",element:<Contact/>},
+        {path:"productdetails",element:<ProductDetails/>},
         {path:"*",element:<NotFound/>},
 
       ]
