@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../Helper/supabase-client";
-import { Link } from "react-router-dom";
+import { Link,  } from "react-router-dom";
 
 function NewProducts() {
+
+
+
+   
+
   const [NewProducts, setNewProducts] = useState([]);
 
   async function getNewProducts() {

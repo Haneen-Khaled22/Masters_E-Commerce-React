@@ -12,8 +12,15 @@ import Categories from "../Categories/Categories";
 
 import WeekendDiscount from "../WeekendDiscount/WeekendDiscount";
 import TrendingProducts from "../TrendingProducts/TrendingProducts";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
+
+  let navigate = useNavigate();
+    function navigateToShop(){
+    navigate('/shop');
+  }
+
   return (
     // <div>home</div>
     <div>
@@ -49,7 +56,7 @@ function Home() {
                   $7.99
                 </span>
               </h2>
-              <button className="flex items-center gap-1 mt-3 bg-[#35AFA0] text-white px-2 sm:px-3 py-1.5 sm:py-2 cursor-pointer rounded-full hover:bg-[#5CC0B3] transition text-xs sm:text-sm">
+              <button onClick={navigateToShop} className="flex items-center gap-1 mt-3 bg-[#35AFA0] text-white px-2 sm:px-3 py-1.5 sm:py-2 cursor-pointer rounded-full hover:bg-[#5CC0B3] transition text-xs sm:text-sm">
                 Shop Now
                 <span>
                   <i className="fa-solid fa-arrow-right"></i>
