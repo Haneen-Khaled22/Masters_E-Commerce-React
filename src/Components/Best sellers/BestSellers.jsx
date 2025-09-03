@@ -47,7 +47,8 @@ function BestSellers() {
   const [bestSellers, setBestSellers] = useState([]);
 
   async function getBestSellers() {
-    let { data, error } = await supabase.from("products").select("*");
+    let { data, error } = await supabase.from("products").select("*")
+     .lt("price", 20)
 
     if (error) {
       console.error("Error fetching products:", error.message);
@@ -106,7 +107,7 @@ function BestSellers() {
     </div>
   )}
 
-<Link to={'/productdetails'}>
+<Link to={`/productdetails/${p.id}`}>
 
   {/* المحتوى */}
   <div className="flex flex-col flex-grow space-y-2">

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../Helper/supabase-client";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function TrendingProducts() {
 
@@ -34,7 +34,8 @@ function TrendingProducts() {
       <div className="mt-4 w-full bg-white border border-[#D9D9E9] rounded-lg p-4">
         <div className="space-y-4">
           {products?.map((p) => (
-            <div key={p.id}
+            <Link to={`/productdetails/${p.id}`}
+             key={p.id}
              onClick={navigateToShop}
             className="flex items-center gap-3 cursor-pointer">
               <img
@@ -59,7 +60,7 @@ function TrendingProducts() {
                   </span>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

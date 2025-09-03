@@ -11,7 +11,7 @@ function NewProducts() {
   const [NewProducts, setNewProducts] = useState([]);
 
   async function getNewProducts() {
-    let { data, error } = await supabase.from("products").select("*");
+    let { data, error } = await supabase.from("products").select("*").limit(8);
 
     if (error) {
       console.error("Error fetching products:", error.message);
@@ -64,7 +64,7 @@ function NewProducts() {
               </div>
             )}
 
-            <Link to={'/productdetails'}>
+            <Link to={`/productdetails/${p.id}`}>
           
             <div className="flex flex-col flex-grow space-y-2">
               <img
@@ -72,10 +72,12 @@ function NewProducts() {
                 alt={p.name}
                 className="w-full h-36 object-contain mx-auto"
               />
+              
 
               <h2 className="text-sm mt-4 mb-1 line-clamp-2  min-h-[2rem] font-semibold">
                 {p.name}
               </h2>
+             
 
               <p
                 className={`text-xs font-bold ${
