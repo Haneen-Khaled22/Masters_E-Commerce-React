@@ -4,6 +4,8 @@ import { Link,  } from "react-router-dom";
 
 function NewProducts() {
 
+   const [loading,setLoading] = useState(false);
+
 
 
    
@@ -11,7 +13,9 @@ function NewProducts() {
   const [NewProducts, setNewProducts] = useState([]);
 
   async function getNewProducts() {
+    setLoading(true)
     let { data, error } = await supabase.from("products").select("*").limit(8);
+    setLoading(false);
 
     if (error) {
       console.error("Error fetching products:", error.message);
@@ -49,6 +53,9 @@ function NewProducts() {
           </Link>
         </div>
       </div>
+      {loading ? <div className="flex justify-center items-center min-h-screen">
+    <span className="loader"></span>
+  </div> :
 
       <div className="grid gap-0 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 border border-gray-200 rounded-lg">
         {NewProducts.map((p) => (
@@ -118,7 +125,7 @@ function NewProducts() {
               </Link>
           </div>
         ))}
-      </div>
+      </div>}
     </div>
   );
 }

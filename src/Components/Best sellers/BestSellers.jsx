@@ -7,6 +7,8 @@ import { Link, useNavigate } from 'react-router-dom';
 
 function BestSellers() {
 
+  const [loading,setLoading] = useState(false)
+
 
     
 
@@ -47,8 +49,10 @@ function BestSellers() {
   const [bestSellers, setBestSellers] = useState([]);
 
   async function getBestSellers() {
+    setLoading(true)
     let { data, error } = await supabase.from("products").select("*")
-     .lt("price", 20)
+     .lt("price", 20);
+     setLoading(false)
 
     if (error) {
       console.error("Error fetching products:", error.message);
@@ -91,7 +95,9 @@ function BestSellers() {
 
       </div>
       
-
+{loading ? <div className="flex justify-center items-center min-h-screen">
+    <span className="loader"></span>
+  </div>:
 <div className="best-sellers-slider border border-gray-200 p-4 rounded-lg">
    <Slider {...settings} className='w-full px-2'>
   {bestSellers.map((p, index) => (
@@ -181,7 +187,7 @@ function BestSellers() {
 
 
 
-</div>
+</div>}
      
      
         

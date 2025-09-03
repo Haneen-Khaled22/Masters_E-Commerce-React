@@ -3,10 +3,14 @@ import { supabase } from "../../Helper/supabase-client";
 import { Link } from "react-router-dom";
 
 function Categories() {
+    const[loading,setLoading] = useState(false);
+  
   const [categories, setCategories] = useState([]);
 
   async function getCategories() {
+    setLoading(true);
     let { data, error } = await supabase.from("categories").select("*");
+    setLoading(false);
     if (error) {
       console.log("error fetching categories", error.message);
       return [];
@@ -25,6 +29,9 @@ function Categories() {
 
   return (
     <div className="mt-5 flex justify-center px-2">
+      {loading ? <div className="flex justify-center items-center min-h-screen">
+    <span className="loader"></span>
+  </div> :
       <div className="bg-white border border-gray-300 rounded-lg overflow-hidden w-full max-w-7xl">
         
         {/* ✅ Mobile view (list style) */}
@@ -83,7 +90,7 @@ function Categories() {
           ))}
         </div>
 
-      </div>
+      </div>}
     </div>
   );
 }

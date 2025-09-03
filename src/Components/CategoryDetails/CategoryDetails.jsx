@@ -4,14 +4,17 @@ import { supabase } from '../../Helper/supabase-client';
 
 function CategoryDetails() {
 
+    const [loading,setLoading] = useState(false);
     const {id} = useParams();
     const [products,setProducts] = useState([]);
     const [category,setCategory] = useState([]);
 
     async function getProductsByCategory(){
+      setLoading(true)
         let {data,error} = await supabase.from("products_with_categories")
   .select("*")
   .eq("category_id",id);
+  setLoading(false);
 
         if (error) {
       console.log("Error fetching products:", error.message);
@@ -21,9 +24,11 @@ function CategoryDetails() {
     }
 
     async function getCategoryById(){
+      setLoading(true)
         let {data,error} = await supabase.from("categories").select("*")
         .eq("id",id)
         .single();
+        setLoading(false);
 
         if (error) {
       console.log("Error fetching products:", error.message);
@@ -54,7 +59,11 @@ function CategoryDetails() {
 
 
     return (
-       <div className="my-5 container">
+     <div className="my-5 container">
+          {loading ? (<div className="flex justify-center items-center min-h-screen">
+    <span className="loader"></span>
+  </div> ) :  (
+    <>
       <div className="flex justify-between items-center " >
         <div>
           {/* ✅ عرض اسم الكاتيجوري فوق */}
@@ -131,6 +140,8 @@ function CategoryDetails() {
           </div>
         ))}
       </div>
+      </>
+      )}
     </div>
     )
 }
