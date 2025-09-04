@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../Helper/supabase-client";
 import { Link, useOutletContext,  } from "react-router-dom";
+import ProductDetailsModal from "../ProductDetails/ProductDetails";
 
 function NewProducts() {
 
@@ -8,6 +9,8 @@ function NewProducts() {
   const {searchTerm} = useOutletContext();
 
    const [loading,setLoading] = useState(false);
+   const [selectedProduct, setSelectedProduct] = useState(null);
+
 
 
 
@@ -78,7 +81,8 @@ const [allProducts, setAllProducts] = useState([]); // all products
         {displayedProducts.map((p) => (
           <div
             key={p.id}
-            className={`bg-white relative flex flex-col h-[350px] px-3 pt-5 justify-between 
+            onClick={() => setSelectedProduct(p.id)}
+            className={`bg-white relative flex flex-col h-[350px] px-3 pt-5 justify-between cursor-pointer 
               border-r border-b border-gray-200`}
           >
             
@@ -87,8 +91,8 @@ const [allProducts, setAllProducts] = useState([]); // all products
                 {p.offer}%
               </div>
             )}
-
-            <Link to={`/productdetails/${p.id}`}>
+{/* 
+            <Link to={`/productdetails/${p.id}`}> */}
           
             <div className="flex flex-col flex-grow space-y-2">
               <img
@@ -139,9 +143,15 @@ const [allProducts, setAllProducts] = useState([]); // all products
               </div>
               
             </div>
-              </Link>
+              {/* </Link> */}
           </div>
         ))}
+         {selectedProduct && (
+          <ProductDetailsModal
+            productId={selectedProduct}
+            onClose={() => setSelectedProduct(null)}
+          />
+        )}
       </div>}
     </div>
   );

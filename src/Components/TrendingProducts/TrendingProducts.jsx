@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../Helper/supabase-client";
 import { Link, useNavigate } from "react-router-dom";
+import ProductDetailsModal from "../ProductDetails/ProductDetails";
+
 
 function TrendingProducts() {
 
 
   const[loading,setLoading] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
   let navigate = useNavigate();
 
      function navigateToShop(){
@@ -27,7 +31,7 @@ function TrendingProducts() {
 
   useEffect(() => {
     getTrendingProducts();
-  }, []);
+  }, );
 
   return (
     <>
@@ -40,9 +44,10 @@ function TrendingProducts() {
       <div className="mt-4 w-full bg-white border border-[#D9D9E9] rounded-lg p-4">
         <div className="space-y-4">
           {products?.map((p) => (
-            <Link to={`/productdetails/${p.id}`}
+            <div
+            onClick={() => setSelectedProduct(p.id)} 
              key={p.id}
-             onClick={navigateToShop}
+             
             className="flex items-center gap-3 cursor-pointer">
               <img
                 src={p.image_url}
@@ -66,10 +71,19 @@ function TrendingProducts() {
                   </span>
                 </div>
               </div>
-            </Link>
+            </div>
           ))}
+           {selectedProduct && (
+        <ProductDetailsModal
+          productId={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+        />
+      )}
         </div>
-      </div>}
+      </div>
+      
+      }
+        
     </>
   );
 }

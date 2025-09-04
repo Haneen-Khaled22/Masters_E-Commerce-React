@@ -15,6 +15,7 @@ import Checkout from './Components/Checkout/Checkout'
 import NotFound from './Components/NotFound/NotFound'
 import 'flowbite';
 
+
 // ✅ استدعاء الـ Context
 // import {  } from "./context/AuthContext";
 import {AuthProvider} from "./Context/AuthContext";
@@ -39,7 +40,7 @@ function App() {
         {path:"blog",element:<Blog/>},
         {path:"contact",element:<Contact/>},
         {path:"productdetails/:id",element:<ProductDetailsModal/>},
-        
+        {path:"categorydetails/:id",element:<CategoryDetails/>},
         {path:"blog",element:<Blog/>},
         {path:"checkout",element:<Checkout/>},
         {path:"*",element:<NotFound/>},
