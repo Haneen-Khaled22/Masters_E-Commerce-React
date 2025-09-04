@@ -122,16 +122,7 @@ function SidebarFilter({ filters, setFilters }) {
         />
         <span className="ml-2 text-[#71778E] mb-2">Out of Stock</span>
       </label>
-      <br />
-      <label>
-        <input
-          type="radio"
-          name="availability"
-          checked={filters.availability === ""}
-          onChange={() => setFilters({ ...filters, availability: "" })}
-        />
-        <span className="ml-2 text-[#71778E]">All</span>
-      </label>
+      
 
       
     </div>
