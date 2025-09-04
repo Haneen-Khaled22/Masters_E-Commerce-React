@@ -41,6 +41,7 @@ function App() {
         {path:"productdetails/:id",element:<ProductDetailsModal/>},
         
         {path:"blog",element:<Blog/>},
+        
         {path:"checkout",element:<Checkout/>},
         {path:"*",element:<NotFound/>},
 
