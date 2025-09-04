@@ -1,11 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../Helper/supabase-client";
+import { Link, useNavigate } from "react-router-dom";
 
 function TrendingProducts() {
+
+
+  const[loading,setLoading] = useState(false);
+  let navigate = useNavigate();
+
+     function navigateToShop(){
+    navigate('/shop');
+  }
   const [products, setProducts] = useState([]);
 
   const getTrendingProducts = async () => {
+    setLoading(true);
     let { data, error } = await supabase.from("trending_products").select("*");
+    setLoading(false)
 
     if (error) {
       console.error("Error fetching trending products:", error.message);
@@ -23,10 +34,16 @@ function TrendingProducts() {
       <h2 className="text-lg font-semibold text-[#202435] uppercase tracking-tight mb-4 mt-10">
         Trending Search
       </h2>
+      {loading ? <div className="flex justify-center items-center min-h-screen">
+    <span className="loader"></span>
+  </div> :
       <div className="mt-4 w-full bg-white border border-[#D9D9E9] rounded-lg p-4">
         <div className="space-y-4">
           {products?.map((p) => (
-            <div key={p.id} className="flex items-center gap-3">
+            <Link to={`/productdetails/${p.id}`}
+             key={p.id}
+             onClick={navigateToShop}
+            className="flex items-center gap-3 cursor-pointer">
               <img
                 src={p.image_url}
                 alt={p.name}
@@ -49,10 +66,10 @@ function TrendingProducts() {
                   </span>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
-      </div>
+      </div>}
     </>
   );
 }

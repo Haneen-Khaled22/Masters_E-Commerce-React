@@ -1,17 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../Helper/supabase-client";
-import { Link,  } from "react-router-dom";
+import { Link, useOutletContext,  } from "react-router-dom";
 
 function NewProducts() {
+
+
+  const {searchTerm} = useOutletContext();
+
+   const [loading,setLoading] = useState(false);
 
 
 
    
 
-  const [NewProducts, setNewProducts] = useState([]);
+const [allProducts, setAllProducts] = useState([]); // all products
+  const [displayedProducts, setDisplayedProducts] = useState([]); // searchedproducts
 
   async function getNewProducts() {
-    let { data, error } = await supabase.from("products").select("*");
+    setLoading(true);
+    const { data, error } = await supabase.from("products").select("*").limit(8);
+    setLoading(false);
 
     if (error) {
       console.error("Error fetching products:", error.message);
@@ -22,12 +30,25 @@ function NewProducts() {
 
   useEffect(() => {
     async function fetchData() {
-      const result = await getNewProducts();
-      setNewProducts(result);
-      //   console.log("result:", result);
+      const products = await getNewProducts();
+      setAllProducts(products);       
+      setDisplayedProducts(products); 
     }
     fetchData();
   }, []);
+
+  // فلترة حسب searchTerm
+  useEffect(() => {
+    if (!searchTerm) {
+      setDisplayedProducts(allProducts); // لو مفيش سيرش، عرض كل المنتجات
+    } else {
+      const filtered = allProducts.filter(p =>
+        p.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setDisplayedProducts(filtered);
+    }
+  }, [searchTerm, allProducts]);
+
 
   return (
     <div className="my-5">
@@ -49,30 +70,38 @@ function NewProducts() {
           </Link>
         </div>
       </div>
+      {loading ? <div className="flex justify-center items-center min-h-screen">
+    <span className="loader"></span>
+  </div> :
 
       <div className="grid gap-0 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 border border-gray-200 rounded-lg">
-        {NewProducts.map((p) => (
+        {displayedProducts.map((p) => (
           <div
             key={p.id}
             className={`bg-white relative flex flex-col h-[350px] px-3 pt-5 justify-between 
               border-r border-b border-gray-200`}
           >
+            
             {p.offer && (
               <div className="absolute top-4 left-2 bg-[#35AFA0] text-white text-xs font-bold px-2 py-1 rounded">
                 {p.offer}%
               </div>
             )}
 
+            <Link to={`/productdetails/${p.id}`}>
+          
             <div className="flex flex-col flex-grow space-y-2">
               <img
                 src={p.image}
                 alt={p.name}
                 className="w-full h-36 object-contain mx-auto"
               />
+              
 
               <h2 className="text-sm mt-4 mb-1 line-clamp-2  min-h-[2rem] font-semibold">
                 {p.name}
               </h2>
+             
 
               <p
                 className={`text-xs font-bold ${
@@ -108,10 +137,12 @@ function NewProducts() {
                 )}
                 <span className="text-[#D51243] font-bold">${p.price}</span>
               </div>
+              
             </div>
+              </Link>
           </div>
         ))}
-      </div>
+      </div>}
     </div>
   );
 }

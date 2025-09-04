@@ -396,7 +396,7 @@ function Home() {
                 week..
               </p>
             </div>
-            <button className="flex items-center gap-2 text-xs sm:text-sm md:text-base text-gray-500 border border-gray-400 rounded-3xl px-3 py-1.5 sm:px-4 sm:py-2 cursor-pointer hover:bg-gray-400 hover:text-white transition">
+            <button onClick={navigateToShop} className="flex items-center gap-2 text-xs sm:text-sm md:text-base text-gray-500 border border-gray-400 rounded-3xl px-3 py-1.5 sm:px-4 sm:py-2 cursor-pointer hover:bg-gray-400 hover:text-white transition">
               View all
               <span className="transition">
                 <i className="fa-solid fa-arrow-right"></i>

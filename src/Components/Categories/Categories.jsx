@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../Helper/supabase-client";
+import { Link } from "react-router-dom";
 
 function Categories() {
+    const[loading,setLoading] = useState(false);
+  
   const [categories, setCategories] = useState([]);
 
   async function getCategories() {
+    setLoading(true);
     let { data, error } = await supabase.from("categories").select("*");
+    setLoading(false);
     if (error) {
       console.log("error fetching categories", error.message);
       return [];
@@ -24,12 +29,16 @@ function Categories() {
 
   return (
     <div className="mt-5 flex justify-center px-2">
+      {loading ? <div className="flex justify-center items-center min-h-screen">
+    <span className="loader"></span>
+  </div> :
       <div className="bg-white border border-gray-300 rounded-lg overflow-hidden w-full max-w-7xl">
         
         {/* ✅ Mobile view (list style) */}
         <div className="grid grid-cols-1 gap-3 p-3 md:hidden">
           {categories.map((cat) => (
-            <div
+            <Link
+            to={`/categorydetails/${cat.id}`}  
               key={cat.id}
               className="flex items-center gap-4 border-b border-gray-200 pb-2 cursor-pointer"
             >
@@ -44,14 +53,15 @@ function Categories() {
                 </h2>
                 <p className="text-gray-500 text-xs">{cat.items} Items</p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
         {/* ✅ Tablet & Desktop view (grid style) */}
         <div className="hidden md:grid grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {categories.map((cat, index) => (
-            <div
+            <Link
+             to={`/categorydetails/${cat.id}`}
               key={cat.id}
               className={`border-b border-r border-gray-200 flex cursor-pointer ${
                 index === 0
@@ -76,11 +86,11 @@ function Categories() {
                   {cat.items} Items
                 </p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
-      </div>
+      </div>}
     </div>
   );
 }

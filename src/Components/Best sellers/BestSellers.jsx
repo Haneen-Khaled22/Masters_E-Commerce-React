@@ -3,8 +3,11 @@ import { supabase } from "../../Helper/supabase-client"
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 import Slider from 'react-slick';
+import { Link, useNavigate } from 'react-router-dom';
 
 function BestSellers() {
+
+  const [loading,setLoading] = useState(false)
 
 
     
@@ -46,7 +49,10 @@ function BestSellers() {
   const [bestSellers, setBestSellers] = useState([]);
 
   async function getBestSellers() {
-    let { data, error } = await supabase.from("products").select("*");
+    setLoading(true)
+    let { data, error } = await supabase.from("products").select("*")
+     .lt("price", 20);
+     setLoading(false)
 
     if (error) {
       console.error("Error fetching products:", error.message);
@@ -64,6 +70,12 @@ function BestSellers() {
     fetchData();
   }, []);
 
+  let navigate = useNavigate();
+   function navigateToShop(){
+    navigate("/shop")
+  }
+
+
   return (
     <div >
       <div className='flex justify-between items-center'>
@@ -72,7 +84,7 @@ function BestSellers() {
       <p className='text-gray-400 text-sm mb-3'>Do not miss the current offers until the end of March.</p>
 
         </div>
-       <button className="flex items-center gap-2 text-xs sm:text-sm md:text-base text-gray-500 border border-gray-400 rounded-3xl px-3 py-1.5 sm:px-4 sm:py-2 cursor-pointer hover:bg-gray-400 hover:text-white transition">
+       <button onClick={navigateToShop} className="flex items-center gap-2 text-xs sm:text-sm md:text-base text-gray-500 border border-gray-400 rounded-3xl px-3 py-1.5 sm:px-4 sm:py-2 cursor-pointer hover:bg-gray-400 hover:text-white transition">
   View all
   <span className="transition">
     <i className="fa-solid fa-arrow-right"></i>
@@ -83,7 +95,9 @@ function BestSellers() {
 
       </div>
       
-
+{loading ? <div className="flex justify-center items-center min-h-screen">
+    <span className="loader"></span>
+  </div>:
 <div className="best-sellers-slider border border-gray-200 p-4 rounded-lg">
    <Slider {...settings} className='w-full px-2'>
   {bestSellers.map((p, index) => (
@@ -94,10 +108,12 @@ function BestSellers() {
 >
   {/* خصم */}
   {p.offer && (
-    <div className="absolute top-2 left-2 bg-[#35AFA0] text-white text-xs font-bold px-2 py-1 rounded">
+    <div className=" cursor-pointer absolute top-2 left-2 bg-[#35AFA0] text-white text-xs font-bold px-2 py-1 rounded">
       {p.offer}%
     </div>
   )}
+
+<Link to={`/productdetails/${p.id}`}>
 
   {/* المحتوى */}
   <div className="flex flex-col flex-grow space-y-2">
@@ -163,6 +179,7 @@ function BestSellers() {
       +
     </button>
   </div>
+  </Link>
 </div>
 
   ))}
@@ -170,7 +187,7 @@ function BestSellers() {
 
 
 
-</div>
+</div>}
      
      
         
