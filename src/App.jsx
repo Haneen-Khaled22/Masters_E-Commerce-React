@@ -11,6 +11,7 @@ import About from './Components/about/About'
 import Shop from './Components/shop/Shop'
 import Blog from './Components/Blog/Blog'
 import Contact from './Components/Contact/Contact'
+import Checkout from './Components/Checkout/Checkout'
 import NotFound from './Components/NotFound/NotFound'
 import 'flowbite';
 
@@ -34,6 +35,7 @@ function App() {
         {path:"contact",element:<Contact/>},
         {path:"about",element:<About/>},
         {path:"blog",element:<Blog/>},
+        {path:"checkout",element:<Checkout/>},
         {path:"*",element:<NotFound/>},
 
       ]

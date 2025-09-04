@@ -1,29 +1,107 @@
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { ImSpinner8 } from "react-icons/im";
+import { CartContext } from "../../Context/CartContext";
+import { supabase } from "../../Helper/supabase-client";
+import { Link } from "react-router-dom";
 
 function Checkout() {
-  // Dummy static products (UI only)
-  const products = [
-    {
-      id: 1,
-      title: "Sample Product 1",
-      image: "https://via.placeholder.com/60",
-      quantity: 2,
-      price: 25.99,
-    },
-    {
-      id: 2,
-      title: "Sample Product 2",
-      image: "https://via.placeholder.com/60",
-      quantity: 1,
-      price: 45.5,
-    },
-  ];
+  const { cart, updateQuantity, removeFromCart } = useContext(CartContext);
 
-  const subtotal = products.reduce(
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // ✅ Track login state
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // Check current session
+    const checkSession = async () => {
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.getSession();
+
+      if (error) {
+        console.error("Error fetching session:", error.message);
+      }
+
+      setUser(session?.user || null);
+    };
+
+    checkSession();
+
+    // Listen to auth state changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user || null);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      if (cart.length === 0) {
+        setProducts([]);
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const ids = cart.map((item) => item.id);
+
+        const { data, error } = await supabase
+          .from("products")
+          .select("*")
+          .in("id", ids);
+
+        if (error) throw error;
+
+        const productData = data.map((product) => {
+          const cartItem = cart.find((c) => c.id === product.id);
+          return {
+            ...product,
+            quantity: cartItem?.quantity || 1,
+          };
+        });
+
+        setProducts(productData);
+      } catch (err) {
+        console.error("Failed to fetch products:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, [cart]);
+
+  const total = products.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
   );
-  const total = subtotal; // no shipping added
+
+  const handleDecrease = (product) => {
+    if (product.quantity > 1) {
+      updateQuantity(product.id, product.quantity - 1);
+    } else {
+      removeFromCart(product.id);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <ImSpinner8
+          className="animate-spin text-7xl opacity-70"
+          aria-label="Loading"
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white min-h-screen py-16 px-4 md:px-12">
@@ -34,12 +112,18 @@ function Checkout() {
           <div>
             <div className="flex items-center justify-between mb-4 mt-8">
               <h2 className="text-2xl font-semibold text-gray-800">Contact</h2>
-              <a
-                href="#"
-                className="text-blue-500 text-sm font-semibold underline hover:text-blue-700"
-              >
-                Log in
-              </a>
+
+              {/* ✅ Show login link only if NOT logged in */}
+              {!user ? (
+                <Link
+                  to="/login"
+                  className="text-blue-500 text-sm font-semibold underline hover:text-blue-700"
+                >
+                  Log in
+                </Link>
+              ) : (
+                <span className="text-gray-500 text-sm">You are logged in</span>
+              )}
             </div>
             <div className="flex items-center space-x-4">
               <input
@@ -56,12 +140,14 @@ function Checkout() {
 
           {/* Delivery Section */}
           <div>
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-              Delivery
-            </h2>
-            <div className="w-full border border-gray-300 rounded-md px-4 py-2 mb-4 bg-white">
-              <p className="text-gray-400 text-sm">Country/Region</p>
-              <p className="text-gray-800 font-medium">United States</p>
+            <div>
+              <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+                Delivery
+              </h2>
+              <div className="w-full border border-gray-300 rounded-md px-4 py-2 mb-4 bg-white">
+                <p className="text-gray-400 text-sm">Country/Region</p>
+                <p className="text-gray-800 font-medium">United States</p>
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <input
@@ -123,6 +209,22 @@ function Checkout() {
               All transactions are secure and encrypted.
             </p>
             <div className="flex flex-col items-center justify-center mb-4 border border-gray-100 bg-gray-50 p-4 rounded">
+              {/* Payment SVG Icon */}
+              <svg
+                width="65"
+                height="65"
+                viewBox="0 0 65 65"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="mb-2"
+              >
+                <path
+                  d="M44.0936 29.1082H5.33098C3.29177 29.1082 1.63867 30.7613 1.63867 32.8005V52.3278C1.63867 54.3671 3.29177 56.0202 5.33098 56.0202H44.0936C46.1329 56.0202 47.786 54.3671 47.786 52.3278V32.8005C47.786 30.7613 46.1329 29.1082 44.0936 29.1082Z"
+                  fill="#FAFAFA"
+                  stroke="#B3B3B3"
+                  strokeWidth="3.28205"
+                />
+              </svg>
               <p className="text-gray-500 text-center">
                 This store can't accept payments right now.
               </p>
@@ -145,6 +247,7 @@ function Checkout() {
         <div className="space-y-6">
           {products.map((product) => (
             <div key={product.id} className="flex items-center gap-4 mb-6 mt-8">
+              {/* Product image with vertical shadows only */}
               <div
                 className="relative border border-gray-200 p-4 rounded-md"
                 style={{
@@ -157,8 +260,16 @@ function Checkout() {
                   alt={product.title}
                   className="w-16 h-16 object-contain rounded-md"
                 />
+                {/* Quantity badge */}
                 <div className="absolute top-[-8px] left-[-8px] bg-gray-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">
                   {product.quantity}
+                </div>
+
+                <div
+                  className="absolute bottom-[-8px] right-[-8px] bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs cursor-pointer"
+                  onClick={() => handleDecrease(product)}
+                >
+                  -
                 </div>
               </div>
               <div className="flex-1 text-sm">
@@ -173,10 +284,16 @@ function Checkout() {
           {/* Summary totals */}
           <div className="pt-6 space-y-2 text-sm">
             <div className="flex justify-between mb-2">
-              <span>
-                Subtotal <span className="ml-2">{products.length} items</span>
+              <span className="flex items-center">
+                Subtotal
+                <span className="relative inline-block ml-1">
+                  <span className="absolute top-1/2 left-0 transform -translate-y-1/2 text-[8px] leading-none">
+                    •
+                  </span>
+                </span>
+                <span className="ml-2">{products.length} items</span>
               </span>
-              <span>${subtotal.toFixed(2)}</span>
+              <span>${total.toFixed(2)}</span>
             </div>
             <div className="flex justify-between mb-4">
               <span>Shipping</span>
@@ -185,7 +302,7 @@ function Checkout() {
             <div className="flex justify-between font-bold text-lg pt-5">
               <span>Total</span>
               <span>
-                <span className="text-sm text-gray-500">USD</span> $
+                <span className=" text-sm text-gray-500">USD</span> $
                 {total.toFixed(2)}
               </span>
             </div>
