@@ -105,10 +105,10 @@ function NavBar({searchTerm,setsearchTerm}) {
           </p>
 
           {/* زرار اللوج آوت */}
-          <button onClick={handleLogout}
+          {user? <button onClick={handleLogout}
           className="w-full py-2 text-sm text-red-600 font-medium hover:bg-gray-100 rounded-md">
             Logout
-          </button>
+          </button>:null}
         </div>
       )}
     </div>

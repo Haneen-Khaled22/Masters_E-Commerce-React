@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import handicon from "../../assets/Icon.png"
 import { Link, NavLink } from 'react-router-dom';
+import { useLanguage } from '../../Context/LanguageContext';
 
 function FirstNavbar() {
+
+    const { language, toggleLanguage } = useLanguage();
 
     const [open, setOpen] = useState(false);
     return (
@@ -29,11 +32,12 @@ function FirstNavbar() {
            
   <li className="border-r-1 border-gray-300 pe-4">Need help? Call Us:<span className="text-[#35AFA0] font-bold"> +0020500</span></li>
   <li className="relative">
+      {/* زرار اللغة */}
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded-sm cursor-pointer  md:border-0  md:p-0 md:w-auto dark:text-white "
+        className="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded-sm cursor-pointer md:border-0 md:p-0 md:w-auto dark:text-white"
       >
-        English
+        {language === "en" ? "English" : "العربية"}
         <svg
           className="w-2.5 h-2.5 ms-2.5"
           aria-hidden="true"
@@ -51,15 +55,22 @@ function FirstNavbar() {
         </svg>
       </button>
 
+      {/* القائمة */}
       {open && (
         <div className="absolute z-10 font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600">
           <ul className="py-2 text-sm text-gray-700 dark:text-gray-400">
             <li>
-              <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Arabic</a>
+              <button
+                onClick={() => {
+                  toggleLanguage(); // ✅ يغير اللغة
+                  setOpen(false); // ✅ يقفل القائمة
+                }}
+                className="w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+              >
+                {language === "en" ? "Arabic" : "English"}
+              </button>
             </li>
-            
           </ul>
-         
         </div>
       )}
     </li>

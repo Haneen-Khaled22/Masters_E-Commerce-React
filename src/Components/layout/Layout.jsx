@@ -5,6 +5,7 @@ import { Outlet } from 'react-router-dom'
 import FirstNavbar from '../first Navbar/FirstNavbar'
 import Footer from '../footer/Footer'
 import LastNavbar from '../last Navbar/LastNavbar'
+import ScrollToTop from '../ScrollToTop/ScrollToTop'
 
 
 function Layout() {
@@ -15,6 +16,7 @@ function Layout() {
 
     return (
        <div >
+        <ScrollToTop/>
   
     <div className="sticky top-0 z-50">
   <FirstNavbar />

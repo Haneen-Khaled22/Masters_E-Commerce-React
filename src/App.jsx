@@ -22,6 +22,7 @@ import ProductDetails from './Components/ProductDetails/ProductDetails';
 import Checkout from './Components/Checkout/Checkout';
 import CategoryDetails from './Components/CategoryDetails/CategoryDetails';
 import ProductDetailsModal from './Components/ProductDetails/ProductDetails';
+import { LanguageProvider } from './Context/LanguageContext';
 
 function App() {
   let router = createBrowserRouter([
@@ -52,7 +53,9 @@ function App() {
     <>
       <AuthProvider>
         <CartProvider>
+          <LanguageProvider>
           <RouterProvider router={router} />
+          </LanguageProvider>
           <Toaster />
         </CartProvider>
       </AuthProvider>
