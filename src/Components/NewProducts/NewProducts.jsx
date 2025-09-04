@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../Helper/supabase-client";
-import { Link,  } from "react-router-dom";
+import { Link, useOutletContext,  } from "react-router-dom";
 
 function NewProducts() {
+
+
+  const {searchTerm} = useOutletContext();
 
    const [loading,setLoading] = useState(false);
 
@@ -10,11 +13,12 @@ function NewProducts() {
 
    
 
-  const [NewProducts, setNewProducts] = useState([]);
+const [allProducts, setAllProducts] = useState([]); // all products
+  const [displayedProducts, setDisplayedProducts] = useState([]); // searchedproducts
 
   async function getNewProducts() {
-    setLoading(true)
-    let { data, error } = await supabase.from("products").select("*").limit(8);
+    setLoading(true);
+    const { data, error } = await supabase.from("products").select("*").limit(8);
     setLoading(false);
 
     if (error) {
@@ -26,12 +30,25 @@ function NewProducts() {
 
   useEffect(() => {
     async function fetchData() {
-      const result = await getNewProducts();
-      setNewProducts(result);
-      //   console.log("result:", result);
+      const products = await getNewProducts();
+      setAllProducts(products);       
+      setDisplayedProducts(products); 
     }
     fetchData();
   }, []);
+
+  // فلترة حسب searchTerm
+  useEffect(() => {
+    if (!searchTerm) {
+      setDisplayedProducts(allProducts); // لو مفيش سيرش، عرض كل المنتجات
+    } else {
+      const filtered = allProducts.filter(p =>
+        p.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setDisplayedProducts(filtered);
+    }
+  }, [searchTerm, allProducts]);
+
 
   return (
     <div className="my-5">
@@ -58,7 +75,7 @@ function NewProducts() {
   </div> :
 
       <div className="grid gap-0 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 border border-gray-200 rounded-lg">
-        {NewProducts.map((p) => (
+        {displayedProducts.map((p) => (
           <div
             key={p.id}
             className={`bg-white relative flex flex-col h-[350px] px-3 pt-5 justify-between 

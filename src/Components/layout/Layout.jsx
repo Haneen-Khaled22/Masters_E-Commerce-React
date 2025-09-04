@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import NavBar from '../main Navbar/NavBar'
 import { Outlet } from 'react-router-dom'
 
@@ -9,18 +9,22 @@ import LastNavbar from '../last Navbar/LastNavbar'
 
 function Layout() {
 
+  const [searchTerm,setsearchTerm] = useState("")
+
     
 
     return (
-       <div>
+       <div >
   
-      <FirstNavbar />
-      <NavBar />
-      <LastNavbar />
+    <div className="sticky top-0 z-50">
+  <FirstNavbar />
+  <NavBar searchTerm={searchTerm} setsearchTerm={setsearchTerm} />
+  <LastNavbar />
+</div>
   
 
-  <div>
-    <Outlet />
+  <div >
+    <Outlet context={{searchTerm}}/>
   </div>
 
   <Footer />

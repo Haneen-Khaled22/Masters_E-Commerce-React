@@ -15,7 +15,7 @@ function LastNavbar() {
   const [menuOpen, setMenuOpen] = useState(false); 
 
   return (
-    <nav className="bg-white border-b border-gray-200 dark:bg-gray-900 mt-3 relative">
+    <nav className="bg-white border-b border-gray-200 dark:bg-gray-900  relative">
       <div className="max-w-screen-xl flex items-center justify-between mx-auto p-3">
         
        

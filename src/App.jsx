@@ -21,6 +21,7 @@ import {CartProvider} from "./Context/CartContext";
 import ProductDetails from './Components/ProductDetails/ProductDetails';
 import Checkout from './Components/Checkout/Checkout';
 import CategoryDetails from './Components/CategoryDetails/CategoryDetails';
+import ProductDetailsModal from './Components/ProductDetails/ProductDetails';
 
 function App() {
   let router = createBrowserRouter([
@@ -35,7 +36,7 @@ function App() {
         {path:"shop",element:<Shop/>},
         {path:"blog",element:<Blog/>},
         {path:"contact",element:<Contact/>},
-        {path:"productdetails/:id",element:<ProductDetails/>},
+        {path:"productdetails/:id",element:<ProductDetailsModal/>},
         {path:"about",element:<About/>},
         {path:"blog",element:<Blog/>},
         {path:"checkout",element:<Checkout/>},

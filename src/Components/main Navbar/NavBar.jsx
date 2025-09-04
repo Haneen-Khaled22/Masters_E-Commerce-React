@@ -5,7 +5,8 @@ import { useAuth } from "../../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
-function NavBar() {
+function NavBar({searchTerm,setsearchTerm}) {
+
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -43,6 +44,8 @@ function NavBar() {
          <div className="flex flex-1 justify-center">
             <div className="relative w-3/4 md:w-[50%]">
               <input
+              value={searchTerm}
+              onChange={(e)=> setsearchTerm(e.target.value)}
                 type="text"
                 id="search-navbar"
                 className="block w-full p-2 ps-3 pr-10 text-sm text-gray-900 border 
