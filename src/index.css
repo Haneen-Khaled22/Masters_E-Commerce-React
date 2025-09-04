@@ -4,3 +4,22 @@
   padding-inline: 112px;
   margin-inline: auto;
 }
+
+/*products modal scrollbar adjustment*/
+.products-modal{
+  scrollbar-width: thin;
+  scrollbar-color: #35AFA0 transparent;
+}
+
+.products-modal::-webkit-scrollbar {
+  width: 8px;
+}
+
+.products-modal::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.products-modal::-webkit-scrollbar-thumb {
+  background-color: #35AFA0;
+  border-radius: 10px;
+}

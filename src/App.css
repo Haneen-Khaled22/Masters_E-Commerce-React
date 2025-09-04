@@ -1,5 +1,6 @@
 @import "tailwindcss";
-
+/* tailwindcss config file */
+@config "../tailwind.config.js";
 
 body {
   font-family: 'Dosis', sans-serif;
@@ -116,6 +117,3 @@ body {
 .best-sellers-slider .slick-next {
   right: -45px !important;
 }
-
-
-

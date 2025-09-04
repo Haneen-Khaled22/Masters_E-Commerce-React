@@ -5,9 +5,11 @@ import "swiper/css";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { supabase } from "../../Helper/supabase-client";
+import { useCart } from "../../Context/CartContext";
 
-
-function ProductDetailsModal({ productId, onClose }) {
+function ProductDetailsModal({ productId, onClose, setSelectedProduct }) {
+  const { cart, addToCart, removeFromCart, clearCart, plus, minus, total } =
+    useCart();
   const [product, setProduct] = useState(null);
   const [related, setRelated] = useState([]);
 
@@ -38,14 +40,19 @@ function ProductDetailsModal({ productId, onClose }) {
   }, [productId]);
 
   if (!product) return null;
-
+  const isInCart = cart.some((item) => item.id === product.id);
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl p-6 max-w-4xl w-full relative">
+    <div className="fixed inset-0 flex items-center justify-center z-50">
+      {/* Background Overlay */}
+      <div
+        className="bg-black opacity-50 absolute inset-0"
+        onClick={onClose}
+      ></div>
+      <div className="bg-white rounded-sm max-h-[90vh] overflow-auto p-6 max-w-4xl w-full relative products-modal">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-2 right-2 text-gray-600 hover:text-black"
+          className="absolute top-2 right-3 text-gray-600 hover:text-black"
         >
           ✖
         </button>
@@ -63,11 +70,7 @@ function ProductDetailsModal({ productId, onClose }) {
 
             {/* 🟢 Slider لصور إضافية */}
             {product.images && product.images.length > 0 && (
-              <Swiper
-                spaceBetween={10}
-                slidesPerView={3}
-                className="mt-4"
-              >
+              <Swiper spaceBetween={10} slidesPerView={3} className="mt-4">
                 {product.images.map((img, idx) => (
                   <SwiperSlide key={idx}>
                     <img
@@ -83,43 +86,94 @@ function ProductDetailsModal({ productId, onClose }) {
 
           {/* 🟢 تفاصيل المنتج */}
           <div>
-            <h2 className="text-2xl font-bold">{product.name}</h2>
-            <p className="text-gray-600 mt-2">{product.description}</p>
-            <p className="text-xl text-[#35AFA0] font-semibold mt-4">
+            <h2 className=" text-base sm:text-lg md:text-2xl font-medium mt-4">
+              {product.name}
+            </h2>
+            <p className="text-sm sm:text-base md:text-xl text-brand-main font-bold mt-4">
               ${product.price}
             </p>
+            <p className="text-gray-600 mt-2">{product.description}</p>
             <p
-              className={`mt-2 ${
-                product.stock? "text-green-600" : "text-red-600"
+              className={`mt-2 text-xs md:text-sm uppercase font-semibold ${
+                product.stock ? "text-brand-green" : "text-brand-red"
               }`}
             >
               {product.stock ? "In stock" : "Out of stock"}
             </p>
-
-            <button className="mt-4 px-6 py-2 bg-[#35AFA0] text-white rounded-lg">
-              Add to Cart
+            <div className="flex justify-center items-center gap-3 mt-4  bg-brand-grey rounded-sm">
+              <span
+                className="flex-1 flex justify-end items-center text-base sm:text-xl py-3 px-2 rounded-l-sm transition-all duration-200 bg-brand-grey hover:bg-brand-light"
+                onClick={() => {
+                  minus(product.id);
+                }}
+              >
+                <i className="fa-solid fa-minus"></i>
+              </span>
+              <span className="block font-semibold text-base sm:text-xl">
+                {isInCart
+                  ? cart.find((item) => item.id === product.id).quantity
+                  : 0}
+              </span>
+              <span
+                className="flex-1 flex justify-start items-center text-base sm:text-xl py-3 px-2 rounded-r-sm transition-all duration-200 bg-brand-grey hover:bg-brand-light"
+                onClick={() => {
+                  plus(product.id, product.price);
+                }}
+              >
+                <i className="fa-solid fa-plus"></i>
+              </span>
+            </div>
+            <button
+              className={`mt-4 py-2 w-full bg-brand-main ${
+                isInCart ? "hover:bg-brand-red" : "hover:bg-brand-green"
+              } text-white rounded-sm block transition-all duration-300`}
+              onClick={() => {
+                isInCart
+                  ? removeFromCart(product.id)
+                  : addToCart(product.id, product.price);
+              }}
+            >
+              <i className="fa-solid fa-bag-shopping"></i>{" "}
+              {isInCart ? "Remove from" : "Add to"} Cart
             </button>
           </div>
         </div>
 
         {/* 🟢 منتجات مشابهة */}
         {related.length > 0 && (
-          <div className="mt-8">
-            <h3 className="text-lg font-bold mb-4">Related Products</h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="mt-6">
+            <h3 className="text-base sm:text-lg md:text-xl font-bold mb-4">
+              Related Products
+            </h3>
+            <div className="grid grid-cols-4 md:grid-cols-6 gap-4">
               {related.map((r) => (
                 <div
                   key={r.id}
-                  className="border rounded-lg p-2 cursor-pointer hover:shadow"
-                  onClick={() => (window.location.href = `/product/${r.id}`)}
+                  className="rounded-lg p-2 cursor-pointer hover:shadow-2xl relative"
+                  onClick={() => setSelectedProduct(r.id)}
                 >
-                  <img
-                    src={r.image}
-                    alt={r.name}
-                    className="w-full h-32 object-cover rounded"
-                  />
-                  <h4 className="font-semibold mt-2 text-sm">{r.name}</h4>
-                  <p className="text-gray-500 text-sm">${r.price}</p>
+                  <div className="relative">
+                    <img
+                      src={r.image}
+                      alt={r.name}
+                      className="block relative mx-auto h-32 object-cover rounded"
+                    />
+                    {r.discount_price ? (
+                      <span className="absolute top-1 left-1 bg-brand-main text-white text-xs rounded-xl uppercase py-1 px-2">
+                        on sale
+                      </span>
+                    ) : null}
+                    <span className="absolute right-1 bottom-1 text-white bg-brand-main p-1 text-xs rounded-full size-6 flex justify-center items-center">
+                      <i className="fa-solid fa-plus"></i>
+                    </span>
+                  </div>
+                  <p className="text-brand-main text-sm">
+                    <span className="line-through text-brand-light">
+                      ${r.discount_price}
+                    </span>{" "}
+                    ${r.price}
+                  </p>
+                  <h4 className="font-semibold text-sm">{r.name}</h4>
                 </div>
               ))}
             </div>
