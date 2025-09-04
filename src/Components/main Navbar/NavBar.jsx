@@ -95,7 +95,7 @@ function NavBar({searchTerm,setsearchTerm}) {
           {/* صورة البروفايل */}
           <img
             src={userphoto}
-            alt="Profile"
+            alt="Profile photo"
             className="w-16 h-16 rounded-full object-cover"
           />
 
