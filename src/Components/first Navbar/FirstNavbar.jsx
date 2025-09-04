@@ -17,7 +17,7 @@ function FirstNavbar() {
    
     <div>
         <ul className='flex space-x-6 text-sm font-normal '>
-            <li><NavLink to={'/about'}>About us</NavLink></li>
+            <li><NavLink to={'/aboutus'}>About us</NavLink></li>
             <li>Compare</li>
             <li>Wishlist</li>
         </ul>
