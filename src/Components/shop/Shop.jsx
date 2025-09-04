@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { supabase } from "../../Helper/supabase-client";
 import SidebarFilter from "../SidebarFilter/SidebarFilter";
 import ProductDetailsModal from "../ProductDetails/ProductDetails";
+import meal from ".././../assets/meals.png"
 
 
 
@@ -80,6 +81,15 @@ if (filters.maxPrice) {
 
       {/* Products */}
       <div className="flex-1 p-6 flex flex-col items-center">
+        <img src={meal} alt="shop" className="h-[300px] w-full rounded-lg object-cover mb-6 relative"/>
+        <div className="absolute inset-0 flex items-center justify-center">
+    <div className=" text-4xl  px-4 py-2">
+      <h2 className="text-xl">Organic Meals Prepared</h2>
+      <h1 className="font-bold">Delivered to <span className="text-[#00B853]">your Home </span></h1>
+      <h2 className="text-[#9B9BB4] text-lg">Fully prepared & delivered nationwide.</h2>
+      
+    </div>
+  </div>
         {loading ? <div className="flex justify-center items-center min-h-screen">
     <span className="loader"></span>
   </div> :
@@ -89,7 +99,7 @@ if (filters.maxPrice) {
           <div
   key={p.id}
   onClick={() => setSelectedProduct(p.id)}
-  className="bg-white relative flex flex-col h-[400px] py-5 px-3 pt-5 
+  className="bg-white relative flex flex-col h-[400px] py-5 px-3 pt-5 cursor-pointer 
              justify-between border-r border-b border-gray-200"
 >
   {p.offer && (

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../Helper/supabase-client";
+import sideimg from "../../assets/shop sidebar.png"
 
 function SidebarFilter({ filters, setFilters }) {
   const [categories, setCategories] = useState([]);
@@ -17,7 +18,7 @@ function SidebarFilter({ filters, setFilters }) {
   }, []);
 
   return (
-    <div className="w-1/4  p-4 sticky top-0 h-screen mb-12">
+    <div className="w-1/4  p-4 sticky top-0  mb-12">
       <h3 className="font-bold mb-4">PRODUCT CATEGORIES</h3>
       {categories.map((cat) => (
         <div key={cat.id} className="mb-2">
@@ -126,6 +127,8 @@ function SidebarFilter({ filters, setFilters }) {
         />
         <span className="ml-2 text-[#71778E] mb-2">Out of Stock</span>
       </label>
+
+      <img src={sideimg} className="w-full object-cover mt-6"/>
       
 
       
