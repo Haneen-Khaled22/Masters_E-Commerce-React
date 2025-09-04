@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { useCart } from "../../Context/CartContext";
 
 function NavBar({ searchTerm, setsearchTerm }) {
-  const { total } = useCart();
+  const { cart, total } = useCart();
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -119,10 +119,29 @@ function NavBar({ searchTerm, setsearchTerm }) {
 
             <span className="font-normal">{total.toFixed(2)}$</span>
             {/* Cart Icon */}
-            <div className="relative w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-red-400 hover:bg-gray-200 cursor-pointer">
-              <i className="fa-solid fa-bag-shopping text-[17px]"></i>
-              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-1.5 w-4 h-4">
-                0
+            <div
+              title="Check Out"
+              className={`relative w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 ${
+                cart
+                  ? cart.length > 0
+                    ? "text-red-400"
+                    : "text-gray-400"
+                  : "text-gray-400"
+              } hover:bg-gray-200 cursor-pointer`}
+            >
+              <a href="/checkout">
+                <i className="fa-solid fa-bag-shopping text-[17px]"></i>
+              </a>
+              <span
+                className={`absolute -top-2 -right-2 &bg-red-600 ${
+                  cart
+                    ? cart.length > 0
+                      ? "bg-red-400"
+                      : "bg-gray-400"
+                    : "bg-gray-400"
+                } text-white text-xs rounded-full px-1.5 w-4 h-4`}
+              >
+                {cart ? cart.length : 0}
               </span>
             </div>
           </div>
