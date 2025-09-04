@@ -20,7 +20,7 @@ import 'flowbite';
 import {AuthProvider} from "./Context/AuthContext";
 import {CartProvider} from "./Context/CartContext";
 import ProductDetails from './Components/ProductDetails/ProductDetails';
-import Checkout from './Components/Checkout/Checkout';
+
 import CategoryDetails from './Components/CategoryDetails/CategoryDetails';
 import ProductDetailsModal from './Components/ProductDetails/ProductDetails';
 import { LanguageProvider } from './Context/LanguageContext';
@@ -34,13 +34,14 @@ function App() {
         {index:true,element:<Home/>},
         {path:"login",element:<Login/>},
         {path:"register",element:<Register/>},
-        {path:"about",element:<About/>},
+        {path:"aboutus",element:<About/>},
         {path:"shop",element:<Shop/>},
         {path:"blog",element:<Blog/>},
         {path:"contact",element:<Contact/>},
         {path:"productdetails/:id",element:<ProductDetailsModal/>},
-        {path:"about",element:<About/>},
+        
         {path:"blog",element:<Blog/>},
+        {path:"checkout",element:<Checkout/>},
         {path:"*",element:<NotFound/>},
 
       ]
