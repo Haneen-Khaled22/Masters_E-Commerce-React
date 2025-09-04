@@ -43,12 +43,14 @@ function Shop() {
         query = query.eq("in_stock", false);
       }
 
-      if (filters.minPrice) {
-        query = query.gte("price", filters.minPrice);
-      }
-      if (filters.maxPrice) {
-        query = query.lte("price", filters.maxPrice);
-      }
+     if (filters.minPrice) {
+  query = query.gte("price", filters.minPrice);
+}
+
+if (filters.maxPrice) {
+  query = query.lte("price", filters.maxPrice);
+}
+
 
       const from = (page - 1) * limit;
       const to = from + limit - 1;

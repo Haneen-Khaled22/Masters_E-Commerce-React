@@ -71,35 +71,39 @@ function SidebarFilter({ filters, setFilters }) {
         </div>
       ))}
       {/* Price Filter */}
-      <h3 className="font-bold mt-4 mb-6">PRICE</h3>
-      <div className="flex space-x-2 items-end">
-        <div>
-            <p className="text-[#71778E] mb-2">From</p>
-             <input
-          type="number"
-          placeholder="0"
-          value={filters.minPrice || ""}
-          onChange={(e) =>
-            setFilters({ ...filters, minPrice: e.target.value || null })
-          }
-          className="w-20 bg-[#F3F4F7] rounded px-3 py-1"
-        />
-        </div>
-       
-        <div className="text-lg px-3 text-[#71778E] self-end">-</div>
-        <div>
-            <p className="text-[#71778E] mb-2">To</p>
-             <input
-          type="number"
-          placeholder="0"
-          value={filters.minPrice || ""}
-          onChange={(e) =>
-            setFilters({ ...filters, minPrice: e.target.value || null })
-          }
-          className="w-20 bg-[#F3F4F7] rounded px-3 py-1"
-        />
-        </div>
-      </div>
+      {/* Price Filter */}
+<h3 className="font-bold mt-4 mb-6">PRICE</h3>
+<div className="flex space-x-2 items-end">
+  <div>
+    <p className="text-[#71778E] mb-2">From</p>
+    <input
+      type="number"
+      placeholder="0"
+      value={filters.minPrice || ""}
+      onChange={(e) =>
+        setFilters({ ...filters, minPrice: e.target.value || null })
+      }
+      className="w-20 bg-[#F3F4F7] rounded px-3 py-1"
+    />
+  </div>
+
+  <div className="text-lg px-3 text-[#71778E] self-end">-</div>
+
+  <div>
+    <p className="text-[#71778E] mb-2">To</p>
+    <input
+      type="number"
+      placeholder="0"
+      value={filters.maxPrice || ""}
+      onChange={(e) =>
+        setFilters({ ...filters, maxPrice: e.target.value || null })
+      }
+      className="w-20 bg-[#F3F4F7] rounded px-3 py-1"
+    />
+  </div>
+</div>
+
+
 
           {/* AVAILABILITY */}
       <h3 className="font-bold mt-4 mb-2">AVAILABILITY</h3>
