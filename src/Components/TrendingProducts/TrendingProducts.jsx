@@ -19,7 +19,8 @@ function TrendingProducts() {
 
   const getTrendingProducts = async () => {
     setLoading(true);
-    let { data, error } = await supabase.from("trending_products").select("*");
+    let { data, error } = await supabase.from("products").select("*").gte("price", 20)
+    .limit(5);
     setLoading(false)
 
     if (error) {
@@ -31,7 +32,7 @@ function TrendingProducts() {
 
   useEffect(() => {
     getTrendingProducts();
-  }, );
+  }, []);
 
   return (
     <>
@@ -50,7 +51,7 @@ function TrendingProducts() {
              
             className="flex items-center gap-3 cursor-pointer">
               <img
-                src={p.image_url}
+                src={p.image}
                 alt={p.name}
                 className="w-20 h-20 object-contain rounded"
               />
@@ -61,9 +62,9 @@ function TrendingProducts() {
                 </h3>
 
                 <div className="mt-1 flex items-center gap-2">
-                  {p.old_price && (
+                  {p.discount_price && (
                     <span className="line-through text-gray-400 text-xs">
-                      ${p.old_price}
+                      ${p.discount_price}
                     </span>
                   )}
                   <span className="text-[#D51243] font-bold text-sm">

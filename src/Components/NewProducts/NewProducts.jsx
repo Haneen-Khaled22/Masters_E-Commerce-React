@@ -1,27 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../Helper/supabase-client";
-import { Link, useOutletContext,  } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import ProductDetailsModal from "../ProductDetails/ProductDetails";
 
 function NewProducts() {
+  const { searchTerm } = useOutletContext();
 
-
-  const {searchTerm} = useOutletContext();
-
-   const [loading,setLoading] = useState(false);
-   const [selectedProduct, setSelectedProduct] = useState(null);
-
-
-
-
-   
-
-const [allProducts, setAllProducts] = useState([]); // all products
-  const [displayedProducts, setDisplayedProducts] = useState([]); // searchedproducts
+  const [loading, setLoading] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [allProducts, setAllProducts] = useState([]);
+  const [displayedProducts, setDisplayedProducts] = useState([]);
 
   async function getNewProducts() {
     setLoading(true);
-    const { data, error } = await supabase.from("products").select("*").limit(8);
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .limit(8);
     setLoading(false);
 
     if (error) {
@@ -34,8 +29,8 @@ const [allProducts, setAllProducts] = useState([]); // all products
   useEffect(() => {
     async function fetchData() {
       const products = await getNewProducts();
-      setAllProducts(products);       
-      setDisplayedProducts(products); 
+      setAllProducts(products);
+      setDisplayedProducts(products); // ✅ re-added this
     }
     fetchData();
   }, []);
@@ -43,15 +38,14 @@ const [allProducts, setAllProducts] = useState([]); // all products
   // فلترة حسب searchTerm
   useEffect(() => {
     if (!searchTerm) {
-      setDisplayedProducts(allProducts); // لو مفيش سيرش، عرض كل المنتجات
+      setDisplayedProducts(allProducts);
     } else {
-      const filtered = allProducts.filter(p =>
+      const filtered = allProducts.filter((p) =>
         p.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setDisplayedProducts(filtered);
     }
   }, [searchTerm, allProducts]);
-
 
   return (
     <div className="my-5">
@@ -65,94 +59,96 @@ const [allProducts, setAllProducts] = useState([]); // all products
         <div>
           <Link to="/shop">
             <button className="flex items-center gap-2 text-xs sm:text-sm md:text-base text-gray-500 border border-gray-400 rounded-3xl px-3 py-1.5 sm:px-4 sm:py-2 cursor-pointer hover:bg-gray-400 hover:text-white transition">
-  View all
-  <span className="transition">
-    <i className="fa-solid fa-arrow-right"></i>
-  </span>
-</button>
+              View all
+              <span className="transition">
+                <i className="fa-solid fa-arrow-right"></i>
+              </span>
+            </button>
           </Link>
         </div>
       </div>
-      {loading ? <div className="flex justify-center items-center min-h-screen">
-    <span className="loader"></span>
-  </div> :
 
-      <div className="grid gap-0 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 border border-gray-200 rounded-lg">
-        {displayedProducts.map((p) => (
-          <div
-            key={p.id}
-            onClick={() => setSelectedProduct(p.id)}
-            className={`bg-white relative flex flex-col h-[350px] px-3 pt-5 justify-between cursor-pointer 
-              border-r border-b border-gray-200`}
-          >
-            
-            {p.offer && (
-              <div className="absolute top-4 left-2 bg-[#35AFA0] text-white text-xs font-bold px-2 py-1 rounded">
-                {p.offer}%
-              </div>
-            )}
-{/* 
-            <Link to={`/productdetails/${p.id}`}> */}
-          
-            <div className="flex flex-col flex-grow space-y-2">
-              <img
-                src={p.image}
-                alt={p.name}
-                className="w-full h-36 object-contain mx-auto"
-              />
-              
+      {loading ? (
+        <div className="flex justify-center items-center py-20">
+          <span className="loader"></span>
+        </div>
+      ) : displayedProducts.length === 0 ? (
+        <p className="text-center text-gray-500 py-10">No products found.</p>
+      ) : (
+        <div className="grid gap-0 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 border border-gray-200 rounded-lg">
+          {displayedProducts.map((p) => (
+            <div
+              key={p.id}
+              onClick={() => setSelectedProduct(p)} // ✅ put back click handler
+              className="bg-white relative flex flex-col h-[350px] px-3 pt-5 justify-between cursor-pointer border-r border-b border-gray-200"
+            >
+              {p.offer && (
+                <div className="absolute top-4 left-2 bg-[#35AFA0] text-white text-xs font-bold px-2 py-1 rounded">
+                  {p.offer}%
+                </div>
+              )}
 
-              <h2 className="text-sm mt-4 mb-1 line-clamp-2  min-h-[2rem] font-semibold">
-                {p.name}
-              </h2>
-             
+              <div className="flex flex-col flex-grow space-y-2">
+                <img
+                  src={p.image}
+                  alt={p.name}
+                  className="w-full h-36 object-contain mx-auto"
+                />
 
-              <p
-                className={`text-xs font-bold ${
-                  p.stock > 0 ? "text-[#00B853]" : "text-[#D51243]"
-                }`}
-              >
-                {p.stock > 0 ? `${p.stock} IN STOCK` : "OUT OF STOCK"}
-              </p>
+                <h2 className="text-sm mt-4 mb-1 line-clamp-2 min-h-[2rem] font-semibold">
+                  {p.name}
+                </h2>
 
-              <div className="flex items-center">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <svg
-                    key={i}
-                    className={`w-4 h-4 ${
-                      i < p.rating ? "text-yellow-400" : "text-gray-300"
-                    }`}
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.23 3.78a1 1 0 00.95.69h3.98c.969 0 1.371 1.24.588 1.81l-3.222 2.34a1 1 0 00-.364 1.118l1.23 3.78c.3.921-.755 1.688-1.54 1.118l-3.222-2.34a1 1 0 00-1.175 0l-3.222 2.34c-.784.57-1.838-.197-1.539-1.118l1.23-3.78a1 1 0 00-.364-1.118L2.3 9.207c-.783-.57-.38-1.81.588-1.81h3.98a1 1 0 00.95-.69l1.23-3.78z" />
-                  </svg>
-                ))}
-                <span className="ml-1 text-xs text-[#71778E]">
-                  {p.review} review
-                </span>
-              </div>
+                <p
+                  className={`text-xs font-bold ${
+                    p.stock > 0 ? "text-[#00B853]" : "text-[#D51243]"
+                  }`}
+                >
+                  {p.stock > 0 ? `${p.stock} IN STOCK` : "OUT OF STOCK"}
+                </p>
 
-              <div className="mt-1">
-                {p.discount_price && (
-                  <span className="line-through text-gray-400 text-sm mr-2">
-                    ${p.discount_price}
+                <div className="flex items-center">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <svg
+                      key={i}
+                      className={`w-4 h-4 ${
+                        i < (p.rating || 0)
+                          ? "text-yellow-400"
+                          : "text-gray-300"
+                      }`}
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.23 3.78a1 1 0 00.95.69h3.98c.969 0 1.371 1.24.588 1.81l-3.222 2.34a1 1 0 00-.364 1.118l1.23 3.78c.3.921-.755 1.688-1.54 1.118l-3.222-2.34a1 1 0 00-1.175 0l-3.222 2.34c-.784.57-1.838-.197-1.539-1.118l1.23-3.78a1 1 0 00-.364-1.118L2.3 9.207c-.783-.57-.38-1.81.588-1.81h3.98a1 1 0 00.95-.69l1.23-3.78z" />
+                    </svg>
+                  ))}
+                  <span className="ml-1 text-xs text-[#71778E]">
+                    {p.review} {p.review === 1 ? "review" : "reviews"}
                   </span>
-                )}
-                <span className="text-[#D51243] font-bold">${p.price}</span>
+                </div>
+
+                <div className="mt-1">
+                  {p.discount_price && (
+                    <span className="line-through text-gray-400 text-sm mr-2">
+                      ${p.discount_price}
+                    </span>
+                  )}
+                  <span className="text-[#D51243] font-bold">
+                    ${p.price || p.discount_price}
+                  </span>
+                </div>
               </div>
-              
             </div>
-              {/* </Link> */}
-          </div>
-        ))}
-         {selectedProduct && (
-          <ProductDetailsModal
-            productId={selectedProduct}
-            onClose={() => setSelectedProduct(null)}
-          />
-        )}
-      </div>}
+          ))}
+        </div>
+      )}
+
+      {selectedProduct && (
+        <ProductDetailsModal
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+        />
+      )}
     </div>
   );
 }

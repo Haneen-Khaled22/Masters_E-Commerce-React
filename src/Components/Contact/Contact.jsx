@@ -44,7 +44,7 @@ function Contact() {
   return (
     <div className="contact-page w-full min-h-screen bg-gray-100">
       {/* Section 1 */}
-      <div className="section1 w-full mt-20">
+      <div className="section1 w-full mt-15">
         <div className="container max-w-[1200px] w-full mx-auto p-4">
           <h2 className="text-center text-[40px] ">Get In Touch</h2>
           <p className="text-center max-w-md w-full mx-auto mt-4 text-gray-600">
