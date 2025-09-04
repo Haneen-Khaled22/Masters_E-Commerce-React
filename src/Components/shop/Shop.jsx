@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { supabase } from "../../Helper/supabase-client";
 import SidebarFilter from "../SidebarFilter/SidebarFilter";
 import ProductDetailsModal from "../ProductDetails/ProductDetails";
-import meal from ".././../assets/meals.png";
+import shopBanner from ".././../assets/banner-shop.png";
 import { useCart } from "../../Context/CartContext";
 
 function Shop() {
@@ -71,26 +71,33 @@ function Shop() {
   }, [filters, page]);
 
   const totalPages = Math.ceil(totalProducts / limit);
-
+  const [showAside,setShowAside]=useState(false);
   return (
-    <div className="flex container  ">
+    <div className="flex container relative !pt-0">
+      
       {/* Sidebar Filter */}
+      <span className={`absolute md:hidden top-8 left-4 z-20 text-xl cursor-pointer hover:text-brand-main ${showAside ? "text-brand-red" : "text-brand-green"} transition-all duration-200`}
+      onClick={()=>setShowAside(!showAside)}>
+        <i className="fa-solid fa-filter"></i>
+      </span>
+      <div className={`absolute md:static md:w-64 ${showAside ? "w-64" : "w-0"} overflow-hidden pt-4 h-full bg-white transition-all duration-300 z-10 shadow-[2px_0_4px_0px_rgba(0,0,0,0.2)] md:shadow-none`}>
       <SidebarFilter filters={filters} setFilters={setFilters} />
-
+      </div>
       {/* Products */}
-      <div className="flex-1 p-6 flex flex-col items-center">
+      <div className="flex-grow-1 pt-8 p-4 flex flex-col items-center">
+        <div className="w-full min-h-[180px] relative mb-8">
+
         <img
-          src={meal}
+          src={shopBanner}
           alt="shop"
-          className="h-[300px] w-full rounded-lg object-cover mb-6 relative"
-        />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className=" text-4xl  px-4 py-2">
-            <h2 className="text-xl">Organic Meals Prepared</h2>
-            <h1 className="font-bold">
+          className="h-full object-cover rounded-sm"
+          />
+          <div className="absolute top-1/2 left-1/2 -translate-1/2">
+            <h2 className="text-base sm:text-xl md:text-2xl capitalize font-extralight text-[#202435]">Organic Meals Prepared</h2>
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold">
               Delivered to <span className="text-[#00B853]">your Home </span>
             </h1>
-            <h2 className="text-[#9B9BB4] text-lg">
+            <h2 className="text-xs sm:text-sm text-[#9B9BB4]">
               Fully prepared & delivered nationwide.
             </h2>
           </div>
