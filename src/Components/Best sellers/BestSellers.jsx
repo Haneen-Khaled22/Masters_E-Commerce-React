@@ -4,10 +4,13 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from 'react-slick';
 import { Link, useNavigate } from 'react-router-dom';
+import ProductDetailsModal from '../ProductDetails/ProductDetails';
 
 function BestSellers() {
 
-  const [loading,setLoading] = useState(false)
+  const [loading,setLoading] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+
 
 
     
@@ -102,8 +105,9 @@ function BestSellers() {
    <Slider {...settings} className='w-full px-2'>
   {bestSellers.map((p, index) => (
    <div
+   onClick={() => setSelectedProduct(p)}
   key={p.id}
-  className={`bg-white relative flex flex-col h-[350px] px-3 py-3 justify-between w-40
+  className={` cursor-pointer bg-white relative flex flex-col h-[350px] px-3 py-3 justify-between w-40
     ${index !== bestSellers.length - 1 ? "border-r border-gray-200" : ""}`}
 >
   {/* خصم */}
@@ -113,7 +117,7 @@ function BestSellers() {
     </div>
   )}
 
-<Link to={`/productdetails/${p.id}`}>
+<div>
 
   {/* المحتوى */}
   <div className="flex flex-col flex-grow space-y-2">
@@ -179,11 +183,20 @@ function BestSellers() {
       +
     </button>
   </div>
-  </Link>
+  </div>
 </div>
 
-  ))}
+  ))
+  
+  }
+  
 </Slider>
+{selectedProduct && (
+          <ProductDetailsModal
+            product={selectedProduct}
+            onClose={() => setSelectedProduct(null)}
+          />
+        )}
 
 
 
