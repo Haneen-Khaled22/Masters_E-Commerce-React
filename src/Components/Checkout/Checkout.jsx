@@ -7,8 +7,6 @@ import { useCart } from "../../Context/CartContext";
 function Checkout() {
   const { cart, total } = useCart();
   const [allProducts, setAllProducts] = useState([]);
-
-  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // ✅ Track login state
