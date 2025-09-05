@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { ImSpinner8 } from "react-icons/im";
-import { CartContext } from "../../Context/CartContext";
 import { supabase } from "../../Helper/supabase-client";
 import { Link } from "react-router-dom";
+import { useCart } from "../../Context/CartContext";
 
 function Checkout() {
-  const { cart, updateQuantity, removeFromCart } = useContext(CartContext);
+  const { cart, updateQuantity, removeFromCart } = useCart();
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);

@@ -1,5 +1,6 @@
 @import "tailwindcss";
-
+/* tailwindcss config file */
+@config "../tailwind.config.js";
 
 body {
   font-family: 'Dosis', sans-serif;
