@@ -1,125 +1,29 @@
-import React, { useEffect, useState } from "react";
-import { useCart } from "../../Context/CartContext";
-import { supabase } from "../../Helper/supabase-client";
+import React from "react";
 
 function Checkout() {
-  const { cart, total } = useCart();
-  const [allProducts, setAllProducts] = useState([]);
-  useEffect(() => {
-    async function fetchCartProductsInfo() {
-      try {
-        let idsArray = cart.map((item) => item.id);
-        const { data, error } = await supabase
-          .from("products")
-          .select("*")
-          .in("id", idsArray);
-        setAllProducts(data);
-        console.log(data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchCartProductsInfo();
-  }, []);
-  const subtotal = total;
-  const finalTotal = subtotal; // no shipping added
-  const { cart, updateQuantity, removeFromCart } = useContext(CartContext);
+  // Dummy static products (UI only)
+  const products = [
+    {
+      id: 1,
+      title: "Sample Product 1",
+      image: "https://via.placeholder.com/60",
+      quantity: 2,
+      price: 25.99,
+    },
+    {
+      id: 2,
+      title: "Sample Product 2",
+      image: "https://via.placeholder.com/60",
+      quantity: 1,
+      price: 45.5,
+    },
+  ];
 
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // ✅ Track login state
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    // Check current session
-    const checkSession = async () => {
-      const {
-        data: { session },
-        error,
-      } = await supabase.auth.getSession();
-
-      if (error) {
-        console.error("Error fetching session:", error.message);
-      }
-
-      setUser(session?.user || null);
-    };
-
-    checkSession();
-
-    // Listen to auth state changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user || null);
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      if (cart.length === 0) {
-        setProducts([]);
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const ids = cart.map((item) => item.id);
-
-        const { data, error } = await supabase
-          .from("products")
-          .select("*")
-          .in("id", ids);
-
-        if (error) throw error;
-
-        const productData = data.map((product) => {
-          const cartItem = cart.find((c) => c.id === product.id);
-          return {
-            ...product,
-            quantity: cartItem?.quantity || 1,
-          };
-        });
-
-        setProducts(productData);
-      } catch (err) {
-        console.error("Failed to fetch products:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, [cart]);
-
-  const total = products.reduce(
+  const subtotal = products.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
   );
-
-  const handleDecrease = (product) => {
-    if (product.quantity > 1) {
-      updateQuantity(product.id, product.quantity - 1);
-    } else {
-      removeFromCart(product.id);
-    }
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-[60vh] flex items-center justify-center">
-        <ImSpinner8
-          className="animate-spin text-7xl opacity-70"
-          aria-label="Loading"
-        />
-      </div>
-    );
-  }
+  const total = subtotal; // no shipping added
 
   return (
     <div className="bg-white min-h-screen py-16 px-4 md:px-12">
