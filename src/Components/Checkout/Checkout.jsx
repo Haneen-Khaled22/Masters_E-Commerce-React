@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 import { useCart } from "../../Context/CartContext";
 
 function Checkout() {
-  const { cart, updateQuantity, removeFromCart } = useCart();
+  const { cart, total } = useCart();
+  const [allProducts, setAllProducts] = useState([]);
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -42,55 +43,32 @@ function Checkout() {
     };
   }, []);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      if (cart.length === 0) {
-        setProducts([]);
-        setLoading(false);
-        return;
-      }
-
+useEffect(() => {
+    async function fetchCartProductsInfo() {
       try {
-        const ids = cart.map((item) => item.id);
-
+        let idsArray = cart.map((item) => item.id);
         const { data, error } = await supabase
           .from("products")
           .select("*")
-          .in("id", ids);
-
-        if (error) throw error;
-
-        const productData = data.map((product) => {
-          const cartItem = cart.find((c) => c.id === product.id);
-          return {
-            ...product,
-            quantity: cartItem?.quantity || 1,
-          };
-        });
-
-        setProducts(productData);
-      } catch (err) {
-        console.error("Failed to fetch products:", err);
-      } finally {
+          .in("id", idsArray);
+        setAllProducts(data);
+        console.log(data);
         setLoading(false);
+      } catch (error) {
+        console.log(error);
       }
-    };
-
-    fetchProducts();
+    }
+    if (cart.length > 0) {
+      fetchCartProductsInfo();
+    }
+    else{
+      setLoading(false);
+    }
   }, [cart]);
 
-  const total = products.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
 
-  const handleDecrease = (product) => {
-    if (product.quantity > 1) {
-      updateQuantity(product.id, product.quantity - 1);
-    } else {
-      removeFromCart(product.id);
-    }
-  };
+  const subtotal = total;
+  const finalTotal = subtotal; // no shipping added
 
   if (loading) {
     return (
@@ -243,11 +221,10 @@ function Checkout() {
           </div>
         </div>
 
-        {/* RIGHT SIDE - ORDER SUMMARY */}
+ {/* RIGHT SIDE - ORDER SUMMARY */}
         <div className="space-y-6">
-          {products.map((product) => (
+          {allProducts.map((product) => (
             <div key={product.id} className="flex items-center gap-4 mb-6 mt-8">
-              {/* Product image with vertical shadows only */}
               <div
                 className="relative border border-gray-200 p-4 rounded-md"
                 style={{
@@ -257,26 +234,23 @@ function Checkout() {
               >
                 <img
                   src={product.image}
-                  alt={product.title}
+                  alt={product.name}
                   className="w-16 h-16 object-contain rounded-md"
                 />
-                {/* Quantity badge */}
                 <div className="absolute top-[-8px] left-[-8px] bg-gray-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">
-                  {product.quantity}
-                </div>
-
-                <div
-                  className="absolute bottom-[-8px] right-[-8px] bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs cursor-pointer"
-                  onClick={() => handleDecrease(product)}
-                >
-                  -
+                  {cart.find((item) => item.id === product.id).quantity}
                 </div>
               </div>
+              <span>{product.name}</span>
               <div className="flex-1 text-sm">
                 <p className="font-medium text-gray-800">{product.title}</p>
               </div>
               <p className="font-semibold text-sm text-gray-800">
-                ${(product.price * product.quantity).toFixed(2)}
+                $
+                {(
+                  product.price *
+                  cart.find((item) => item.id === product.id).quantity
+                ).toFixed(2)}
               </p>
             </div>
           ))}
@@ -284,16 +258,10 @@ function Checkout() {
           {/* Summary totals */}
           <div className="pt-6 space-y-2 text-sm">
             <div className="flex justify-between mb-2">
-              <span className="flex items-center">
-                Subtotal
-                <span className="relative inline-block ml-1">
-                  <span className="absolute top-1/2 left-0 transform -translate-y-1/2 text-[8px] leading-none">
-                    •
-                  </span>
-                </span>
-                <span className="ml-2">{products.length} items</span>
+              <span>
+                Subtotal <span className="ml-2">{cart.length} items</span>
               </span>
-              <span>${total.toFixed(2)}</span>
+              <span>${subtotal.toFixed(2)}</span>
             </div>
             <div className="flex justify-between mb-4">
               <span>Shipping</span>
@@ -302,8 +270,8 @@ function Checkout() {
             <div className="flex justify-between font-bold text-lg pt-5">
               <span>Total</span>
               <span>
-                <span className=" text-sm text-gray-500">USD</span> $
-                {total.toFixed(2)}
+                <span className="text-sm text-gray-500">USD</span> $
+                {finalTotal.toFixed(2)}
               </span>
             </div>
             <div className="flex justify-between text-sm text-gray-500">
