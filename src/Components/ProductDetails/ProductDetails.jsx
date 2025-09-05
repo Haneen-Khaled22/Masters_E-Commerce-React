@@ -1,44 +1,47 @@
 import React, { useEffect, useState } from "react";
-
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import Zoom from "react-medium-image-zoom";
-import "react-medium-image-zoom/dist/styles.css";
 import { supabase } from "../../Helper/supabase-client";
 import { useCart } from "../../Context/CartContext";
 
+<<<<<<< HEAD
 function ProductDetailsModal({ productId, onClose, setSelectedProduct }) {
   const { cart, addToCart, removeFromCart, clearCart, plus, minus, total } =
     useCart();
   const [product, setProduct] = useState(null);
   const [related, setRelated] = useState([]);
+=======
+function ProductDetailsModal({ productId, product, onClose }) {
+  const [productData, setProductData] = useState(product || null);
+  const [loading, setLoading] = useState(false);
+>>>>>>> d8cf3f6eb2e0b665e1d7ba400aa3538839f2eef1
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      const { data, error } = await supabase
-        .from("products")
-        .select("*")
-        .eq("id", productId)
-        .single();
-
-      if (!error) {
-        setProduct(data);
-
-        // 🟢 منتجات مشابهة من نفس الفئة
-        const { data: relatedData } = await supabase
+    async function fetchProduct() {
+      if (productId && !product) { // لو جايب id بس
+        setLoading(true);
+        const { data, error } = await supabase
           .from("products")
           .select("*")
-          .eq("category_id", data.category_id)
-          .neq("id", data.id)
-          .limit(6);
+          .eq("id", productId)
+          .single();
+        setLoading(false);
 
-        setRelated(relatedData || []);
+        if (error) {
+          console.error("Error fetching product:", error.message);
+        } else {
+          setProductData(data);
+        }
       }
-    };
+    }
+    fetchProduct();
+  }, [productId, product]);
 
-    if (productId) fetchProduct();
-  }, [productId]);
+  if (loading) {
+    return <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+      <span className="loader"></span>
+    </div>;
+  }
 
+<<<<<<< HEAD
   if (!product) return null;
   const isInCart = cart.some((item) => item.id === product.id);
   return (
@@ -53,9 +56,23 @@ function ProductDetailsModal({ productId, onClose, setSelectedProduct }) {
         <button
           onClick={onClose}
           className="absolute top-2 right-3 text-gray-600 hover:text-black"
+=======
+  if (!productData) return null;
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+      <div className="bg-white p-5 rounded-lg max-w-md w-full">
+        <h2 className="text-lg font-bold">{productData.name}</h2>
+        <p className="text-gray-600 mb-2">Price: ${productData.price}</p>
+        <img src={productData.image} alt={productData.name} className="w-40 h-40 object-contain mx-auto" />
+        <button
+          onClick={onClose}
+          className="mt-4 bg-red-500 text-white px-4 py-2 rounded"
+>>>>>>> d8cf3f6eb2e0b665e1d7ba400aa3538839f2eef1
         >
-          ✖
+          Close
         </button>
+<<<<<<< HEAD
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* 🟢 صور المنتج مع Zoom */}
@@ -179,6 +196,8 @@ function ProductDetailsModal({ productId, onClose, setSelectedProduct }) {
             </div>
           </div>
         )}
+=======
+>>>>>>> d8cf3f6eb2e0b665e1d7ba400aa3538839f2eef1
       </div>
     </div>
   );

@@ -80,6 +80,7 @@ function NavBar({ searchTerm, setsearchTerm }) {
           </div>
 
           {/* Right: Icons (Cart, Profile, etc.) */}
+<<<<<<< HEAD
           <div className="flex items-center space-x-3">
             {/* Profile Icon */}
             <div className="relative" ref={menuRef}>
@@ -90,6 +91,53 @@ function NavBar({ searchTerm, setsearchTerm }) {
               >
                 <i className="fa-regular fa-user text-[17px]"></i>
               </div>
+=======
+  <div className="flex items-center space-x-3">
+  {/* Profile Icon */}
+ <div className="relative" ref={menuRef}>
+      {/* أيقونة المستخدم */}
+      <div
+        className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer"
+        onClick={() => setOpen(!open)}
+      >
+        <i className="fa-regular fa-user text-[17px]"></i>
+      </div>
+
+      {/* القائمة */}
+      {open && (
+        <div className="absolute right-0  w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 p-2 flex flex-col items-center gap-3">
+          {/* صورة البروفايل */}
+          <img
+            src={userphoto}
+            alt="Profile photo"
+            className="w-16 h-16 rounded-full object-cover"
+          />
+
+          {/* الإيميل */}
+          <p className="text-sm text-gray-700 text-center">
+           {user ? user.email :"Guest"}
+          </p>
+
+          {/* زرار اللوج آوت */}
+          {user? <button onClick={handleLogout}
+          className="w-full py-2 text-sm text-red-600 font-medium hover:bg-gray-100 rounded-md">
+            Logout
+          </button>:null}
+        </div>
+      )}
+    </div>
+
+<span className="font-normal">0.00$</span>
+  {/* Cart Icon */}
+  <div className="relative w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-red-400 hover:bg-gray-200 cursor-pointer">
+    <i className="fa-solid fa-bag-shopping text-[17px]"></i>
+    <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-1.5 w-4 h-4">
+      0
+    </span>
+  </div>
+</div>
+
+>>>>>>> d8cf3f6eb2e0b665e1d7ba400aa3538839f2eef1
 
               {/* القائمة */}
               {open && (

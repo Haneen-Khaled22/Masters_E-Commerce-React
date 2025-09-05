@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 import { createContext, useContext, useEffect, useState } from "react";
 const CartContext = createContext();
+=======
+import { createContext, useContext, useState } from "react";
+
+export const CartContext = createContext(); // 👈 add "export"
+>>>>>>> d8cf3f6eb2e0b665e1d7ba400aa3538839f2eef1
 
 export const CartProvider = ({ children }) => {
   // ✅ استرجاع البيانات من localStorage أول مرة

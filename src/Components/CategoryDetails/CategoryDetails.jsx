@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { supabase } from '../../Helper/supabase-client';
+import ProductDetailsModal from "../ProductDetails/ProductDetails";
 
 function CategoryDetails() {
 
@@ -8,6 +9,7 @@ function CategoryDetails() {
     const {id} = useParams();
     const [products,setProducts] = useState([]);
     const [category,setCategory] = useState([]);
+    const [selectedProduct, setSelectedProduct] = useState(null);
 
     async function getProductsByCategory(){
       setLoading(true)
@@ -80,7 +82,8 @@ function CategoryDetails() {
         {products.map((p) => (
           <div
             key={p.id}
-            className="bg-white relative flex flex-col h-[350px] px-4 pt-5 justify-between 
+            onClick={() => setSelectedProduct(p)} 
+            className="cursor-pointer bg-white relative flex flex-col h-[350px] px-4 pt-5 justify-between 
               border border-gray-200"
           >
             {p.offer && (
@@ -89,7 +92,7 @@ function CategoryDetails() {
               </div>
             )}
 
-            <Link to={`/productdetails/${p.id}`}>
+            <div>
               <div className="flex flex-col flex-grow space-y-2">
                 <img
                   src={p.image}
@@ -136,9 +139,15 @@ function CategoryDetails() {
                   <span className="text-[#D51243] font-bold">${p.price}</span>
                 </div>
               </div>
-            </Link>
+            </div>
           </div>
         ))}
+        {selectedProduct && (
+        <ProductDetailsModal
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+        />
+      )}
       </div>
       </>
       )}

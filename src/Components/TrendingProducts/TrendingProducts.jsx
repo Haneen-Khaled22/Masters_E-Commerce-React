@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../Helper/supabase-client";
 import { Link, useNavigate } from "react-router-dom";
+import ProductDetailsModal from "../ProductDetails/ProductDetails";
+
 
 function TrendingProducts() {
 
 
   const[loading,setLoading] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
   let navigate = useNavigate();
 
      function navigateToShop(){
@@ -15,7 +19,8 @@ function TrendingProducts() {
 
   const getTrendingProducts = async () => {
     setLoading(true);
-    let { data, error } = await supabase.from("trending_products").select("*");
+    let { data, error } = await supabase.from("products").select("*").gte("price", 20)
+    .limit(5);
     setLoading(false)
 
     if (error) {
@@ -40,12 +45,13 @@ function TrendingProducts() {
       <div className="mt-4 w-full bg-white border border-[#D9D9E9] rounded-lg p-4">
         <div className="space-y-4">
           {products?.map((p) => (
-            <Link to={`/productdetails/${p.id}`}
+            <div
+            onClick={() => setSelectedProduct(p.id)} 
              key={p.id}
-             onClick={navigateToShop}
+             
             className="flex items-center gap-3 cursor-pointer">
               <img
-                src={p.image_url}
+                src={p.image}
                 alt={p.name}
                 className="w-20 h-20 object-contain rounded"
               />
@@ -56,9 +62,9 @@ function TrendingProducts() {
                 </h3>
 
                 <div className="mt-1 flex items-center gap-2">
-                  {p.old_price && (
+                  {p.discount_price && (
                     <span className="line-through text-gray-400 text-xs">
-                      ${p.old_price}
+                      ${p.discount_price}
                     </span>
                   )}
                   <span className="text-[#D51243] font-bold text-sm">
@@ -66,10 +72,19 @@ function TrendingProducts() {
                   </span>
                 </div>
               </div>
-            </Link>
+            </div>
           ))}
+           {selectedProduct && (
+        <ProductDetailsModal
+          productId={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+        />
+      )}
         </div>
-      </div>}
+      </div>
+      
+      }
+        
     </>
   );
 }
