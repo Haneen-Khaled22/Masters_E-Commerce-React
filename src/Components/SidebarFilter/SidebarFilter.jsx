@@ -12,13 +12,15 @@ function SidebarFilter({ filters, setFilters }) {
       const { data: catData, error: catError } = await supabase
         .from("categories")
         .select("*");
-      if (catError) console.error("Error fetching categories:", catError.message);
+      if (catError)
+        console.error("Error fetching categories:", catError.message);
       setCategories(catData || []);
 
       const { data: brandData, error: brandError } = await supabase
         .from("brands")
         .select("*");
-      if (brandError) console.error("Error fetching brands:", brandError.message);
+      if (brandError)
+        console.error("Error fetching brands:", brandError.message);
       setBrands(brandData || []);
     };
     fetchFilters();
@@ -32,59 +34,59 @@ function SidebarFilter({ filters, setFilters }) {
         <div key={cat.id} className="mb-2">
           <label>
             <input
-  type="checkbox"
-  checked={filters.categories.includes(cat.id)} // string
-  onChange={(e) => {
-    const id = String(cat.id);  // أو brand.id
- // خليه string زي ما هو
-    if (e.target.checked) {
-      setFilters({
-        ...filters,
-        categories: [...filters.categories, id],
-      });
-    } else {
-      setFilters({
-        ...filters,
-        categories: filters.categories.filter((c) => c !== id),
-      });
-    }
-  }}
-/>
+              type="checkbox"
+              checked={filters.categories.includes(cat.id)} // string
+              onChange={(e) => {
+                const id = String(cat.id); // أو brand.id
+                // خليه string زي ما هو
+                if (e.target.checked) {
+                  setFilters({
+                    ...filters,
+                    categories: [...filters.categories, id],
+                  });
+                } else {
+                  setFilters({
+                    ...filters,
+                    categories: filters.categories.filter((c) => c !== id),
+                  });
+                }
+              }}
+            />
             <span className="ml-2 text-[#71778E]">{cat.name}</span>
           </label>
         </div>
       ))}
 
-      {/* Brands */}
+      {/* Brands
       <h3 className="font-bold mt-20 mb-2">BRANDS</h3>
       {brands.map((brand) => (
         <div key={brand.id}>
           <label>
-           <input
-  type="checkbox"
-  checked={filters.brands.includes(brand.id)} // string
-  onChange={(e) => {
-    const id = brand.id; // string
-    if (e.target.checked) {
-      setFilters({
-        ...filters,
-        brands: [...filters.brands, id],
-      });
-    } else {
-      setFilters({
-        ...filters,
-        brands: filters.brands.filter((b) => b !== id),
-      });
-    }
-  }}
-/>
+            <input
+              type="checkbox"
+              checked={filters.brands.includes(brand.id)} // string
+              onChange={(e) => {
+                const id = brand.id; // string
+                if (e.target.checked) {
+                  setFilters({
+                    ...filters,
+                    brands: [...filters.brands, id],
+                  });
+                } else {
+                  setFilters({
+                    ...filters,
+                    brands: filters.brands.filter((b) => b !== id),
+                  });
+                }
+              }}
+            />
             <span className="ml-2">{brand.name}</span>
           </label>
         </div>
-      ))}
+      ))} */}
 
       {/* Price Filter */}
-      <h3 className="font-bold mt-4 mb-6">PRICE</h3>
+      <h3 className="font-bold mt-8 mb-4">PRICE</h3>
       <div className="flex space-x-2 items-end">
         <div>
           <p className="text-[#71778E] mb-2">From</p>

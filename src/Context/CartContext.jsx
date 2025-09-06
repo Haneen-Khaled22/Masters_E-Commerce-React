@@ -1,4 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
+
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
@@ -25,10 +27,12 @@ export const CartProvider = ({ children }) => {
 
   const addToCart = (id, price) => {
     setCart((prev) => [...prev, { id, price, quantity: 1 }]);
+    toast.success("Added to cart");
   };
 
   const removeFromCart = (id) => {
     setCart((prev) => prev.filter((item) => item.id !== id));
+    toast.error("Removed from cart");
   };
 
   const clearCart = () => {
@@ -50,7 +54,9 @@ export const CartProvider = ({ children }) => {
           item.id === id ? { ...item, quantity: item.quantity - 1 } : item
         )
       );
-      setCart((prev) => prev.filter((item) => item.quantity > 0));
+      if (cart.find((item) => item.id === id).quantity === 1) {
+        removeFromCart(id);
+      }
     }
   };
   return (

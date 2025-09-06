@@ -70,11 +70,8 @@ useEffect(() => {
 
   if (loading) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center">
-        <ImSpinner8
-          className="animate-spin text-7xl opacity-70"
-          aria-label="Loading"
-        />
+      <div className="flex justify-center items-center py-20">
+          <span className="loader"></span>
       </div>
     );
   }

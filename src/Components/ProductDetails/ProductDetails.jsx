@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../Helper/supabase-client";
 import { useCart } from "../../Context/CartContext";
+import { useWishList } from "../../Context/WishListContext";
 import Zoom from "react-medium-image-zoom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -11,8 +12,10 @@ function ProductDetailsModal({ productId, product, onClose }) {
   const [productData, setProductData] = useState(product || null);
   const [loading, setLoading] = useState(false);
   const [related, setRelated] = useState([]);
-  const { cart, addToCart, removeFromCart, clearCart, plus, minus, total } = useCart();
+  const { cart, addToCart, removeFromCart, plus, minus } = useCart();
+  const { addToWishList, removeFromWishList, wishList } = useWishList();
   const isInCart = (id) => cart.some((item) => item.id === id);
+  const isInWishlist = (id) => wishList.some((item) => item.id === id);
   useEffect(() => {
     async function fetchProduct() {
       if (productId && !product) { // لو جايب id بس
@@ -141,7 +144,7 @@ function ProductDetailsModal({ productId, product, onClose }) {
               </span>
             </div>
             <button
-              className={`mt-4 py-2 w-full bg-brand-main ${
+              className={`mt-4 py-4 font-semibold tracking-widest w-full bg-brand-main ${
                 isInCart(productData.id) ? "hover:bg-brand-red" : "hover:bg-brand-green"
               } text-white rounded-sm block transition-all duration-300`}
               onClick={() => {
@@ -153,6 +156,27 @@ function ProductDetailsModal({ productId, product, onClose }) {
               <i className="fa-solid fa-bag-shopping"></i>{" "}
               {isInCart(productData.id) ? "Remove from" : "Add to"} Cart
             </button>
+            <div className="grid grid-cols-2 gap-4 my-2">
+            <button
+              className={`py-4 font-semibold tracking-widest bg-white text-black block rounded-xs border border-[#DEE5EA] transition-all duration-300 hover:border-brand-main`}
+              onClick={() => {
+                isInWishlist(productData.id)
+                  ? removeFromWishList(productData.id)
+                  : addToWishList(productData);
+                }}
+                >
+              <i className={`${isInWishlist(productData.id)?'fa-solid text-brand-main':'fa-regular'} fa-heart`}></i>{" "}
+              Wishlist
+            </button>
+            <button className={`py-4 font-semibold tracking-widest text-black block rounded-xs border border-[#DEE5EA] transition-all duration-300`}>
+              <i className={`fa-solid fa-share`}></i>{" "}
+              Share
+            </button>
+            </div>
+            <div className="pt-8">
+                <h4 className="font-semibold mb-3">Product Details</h4>
+                <p className="font-normal text-sm leading-6">{productData.description ? productData.description : "No description available. lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. lorem ipsum dolor sit amet."}</p>
+            </div>
           </div>
         </div>
 
