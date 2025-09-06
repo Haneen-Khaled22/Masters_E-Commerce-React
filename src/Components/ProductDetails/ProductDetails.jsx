@@ -62,7 +62,7 @@ function ProductDetailsModal({ productId, product, onClose }) {
   //step 1 get the category id of the current product
   const {data:catId,error:catError}= await supabase.from('product_categories').select('category_id').eq('product_id',productData.id);
   if(catError){
-    console.log(catError);
+    console.error(catError);
     return;
   }
   // Step 2: Get related product IDs from the same category, excluding current product
@@ -80,7 +80,6 @@ function ProductDetailsModal({ productId, product, onClose }) {
   console.log(relatedIds);
   if (relatedIds?.length) {
     const relatedIdsArr = relatedIds.map(item => item.product_id);
-    console.log(relatedIdsArr);
     // Step 3: Get product details from 'products' table
     const { data: relatedProducts, error: productsError } = await supabase
       .from('products')
