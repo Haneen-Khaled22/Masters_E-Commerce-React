@@ -102,12 +102,12 @@ function BestSellers() {
         </div>
       ) : (
         <div className="best-sellers-slider border border-gray-200 p-4 rounded-lg">
-          <Slider {...settings} className="w-full px-2">
+          <Slider {...settings} className="w-full px-2 z-index-10">
             {bestSellers.map((p, index) => (
               <div
                 onClick={() => setSelectedProduct(p)}
                 key={p.id}
-                className={` cursor-pointer bg-white relative flex flex-col h-[350px] px-3 py-3 justify-between w-40
+                className={` cursor-pointer bg-white relative flex flex-col h-[350px] px-3 py-3 justify-between w-full
     ${index !== bestSellers.length - 1 ? "border-r border-gray-200" : ""}`}
               >
                 {/* خصم */}
@@ -124,7 +124,7 @@ function BestSellers() {
                     <img
                       src={p.image}
                       alt={p.name}
-                      className="w-full h-36 object-contain mx-auto"
+                      className="w-full max-w-full h-36 object-contain mx-auto"
                     />
 
                     {/* الاسم */}
@@ -184,7 +184,7 @@ function BestSellers() {
                       }}
                       className={` ${
                         isInCart(p.id) ? "bg-brand-red" : "bg-brand-yellow"
-                      } hover:bg-brand-main transition-all duration-300 text-[white] font-bold text-sm font-medium w-full rounded-full py-1`}
+                      } hover:bg-brand-main transition-all duration-300 text-[white] text-sm font-medium w-full rounded-full py-1`}
                     >
                       {isInCart(p.id) ? `Remove from cart` : `Add to cart`}
                     </button>

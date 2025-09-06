@@ -117,6 +117,12 @@ body {
 .best-sellers-slider .slick-next {
   right: -45px !important;
 }
+.slick-slide {
+  padding: 0 8px;
+}
+.slick-list {
+  margin: 0 -8px;
+}
 
 
 
