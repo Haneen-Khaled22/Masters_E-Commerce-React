@@ -1,21 +1,20 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import logo from "../../assets/Link - Bacola Store.png";
-import userphoto from "../../assets/user.png"
+import userphoto from "../../assets/user.png";
 import { useAuth } from "../../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useCart } from "../../Context/CartContext";
 import { useWishList } from "../../Context/WishListContext";
 
-function NavBar({searchTerm,setsearchTerm}) {
-  const { cart, total,clearCart } = useCart();
-  const{clearWishList}=useWishList();
+function NavBar({ searchTerm, setsearchTerm }) {
+  const { cart, total, clearCart } = useCart();
+  const { clearWishList } = useWishList();
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
 
-  let {user,logout} = useAuth();
+  let { user, logout } = useAuth();
   let navigate = useNavigate();
-
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -27,30 +26,32 @@ function NavBar({searchTerm,setsearchTerm}) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  async function handleLogout(){
+  async function handleLogout() {
     await logout();
-    navigate('/login');
-    console.log('logged out');
+    navigate("/login");
+    console.log("logged out");
     clearCart();
     clearWishList();
-    toast.success('logged out successfully');
+    toast.success("logged out successfully");
   }
   return (
     <div>
-      <nav className="bg-white border-gray-200 dark:bg-gray-900  border-t-1">
+      <nav className="bg-white border-gray-200 dark:bg-gray-900 dark:text-white  border-t-1 px-10">
         <div className="mt-1 max-w-screen-xl flex items-center justify-between mx-auto p-2 gap-2">
-          
           {/* Left: Logo */}
-          <a href="#" className="flex items-center space-x-3 rtl:space-x-reverse">
+          <a
+            href="#"
+            className="flex items-center space-x-3 rtl:space-x-reverse"
+          >
             <img src={logo} className="h-12" alt="Logo" />
           </a>
 
           {/* Center: Search */}
-         <div className="flex flex-1 justify-center">
+          <div className="flex flex-1 justify-center">
             <div className="relative w-3/4 md:w-[50%]">
               <input
-              value={searchTerm}
-              onChange={(e)=> setsearchTerm(e.target.value)}
+                value={searchTerm}
+                onChange={(e) => setsearchTerm(e.target.value)}
                 type="text"
                 id="search-navbar"
                 className="block w-full p-2 ps-3 pr-10 text-sm text-gray-900 border 
@@ -83,44 +84,48 @@ function NavBar({searchTerm,setsearchTerm}) {
           </div>
 
           {/* Right: Icons (Cart, Profile, etc.) */}
-  <div className="flex items-center space-x-3">
-  {/* Profile Icon */}
- <div className="relative" ref={menuRef}>
-      {/* أيقونة المستخدم */}
-      <div
-        className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer"
-        onClick={() => setOpen(!open)}
-      >
-        <i className="fa-regular fa-user text-[17px]"></i>
-      </div>
+          <div className="flex items-center space-x-3">
+            {/* Profile Icon */}
+            <div className="relative" ref={menuRef}>
+              {/* أيقونة المستخدم */}
+              <div
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer"
+                onClick={() => setOpen(!open)}
+              >
+                <i className="fa-regular fa-user text-[17px]"></i>
+              </div>
 
-      {/* القائمة */}
-      {open && (
-        <div className="absolute right-0  w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 p-2 flex flex-col items-center gap-3">
-          {/* صورة البروفايل */}
-          <img
-            src={userphoto}
-            alt="Profile photo"
-            className="w-16 h-16 rounded-full object-cover"
-          />
+              {/* القائمة */}
+              {open && (
+                <div className="absolute right-0  w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 p-2 flex flex-col items-center gap-3">
+                  {/* صورة البروفايل */}
+                  <img
+                    src={userphoto}
+                    alt="Profile photo"
+                    className="w-16 h-16 rounded-full object-cover"
+                  />
 
-          {/* الإيميل */}
-          <p className="text-sm text-gray-700 text-center">
-           {user ? user.email :"Guest"}
-          </p>
+                  {/* الإيميل */}
+                  <p className="text-sm text-gray-700 text-center">
+                    {user ? user.email : "Guest"}
+                  </p>
 
-          {/* زرار اللوج آوت */}
-          {user? <button onClick={handleLogout}
-          className="w-full py-2 text-sm text-red-600 font-medium hover:bg-gray-100 rounded-md">
-            Logout
-          </button>:null}
-        </div>
-      )}
-    </div>
+                  {/* زرار اللوج آوت */}
+                  {user ? (
+                    <button
+                      onClick={handleLogout}
+                      className="w-full py-2 text-sm text-red-600 font-medium hover:bg-gray-100 rounded-md"
+                    >
+                      Logout
+                    </button>
+                  ) : null}
+                </div>
+              )}
+            </div>
 
-<span className="font-normal">{total.toFixed(2)}$</span>
-  {/* Cart Icon */}
-  <div
+            <span className="font-normal">{total.toFixed(2)}$</span>
+            {/* Cart Icon */}
+            <div
               title="Check Out"
               className={`relative w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 ${
                 cart
@@ -145,12 +150,7 @@ function NavBar({searchTerm,setsearchTerm}) {
                 {cart ? cart.length : 0}
               </span>
             </div>
-</div>
-
-
-
-
-
+          </div>
         </div>
       </nav>
     </div>

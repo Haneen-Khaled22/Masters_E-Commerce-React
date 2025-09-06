@@ -41,11 +41,11 @@ function Checkout() {
     };
   }, []);
 
-useEffect(() => {
+  useEffect(() => {
     async function fetchCartProductsInfo() {
       try {
         let idsArray = cart.map((item) => item.id);
-        const { data, error } = await supabase
+        const { data } = await supabase
           .from("products")
           .select("*")
           .in("id", idsArray);
@@ -58,12 +58,10 @@ useEffect(() => {
     }
     if (cart.length > 0) {
       fetchCartProductsInfo();
-    }
-    else{
+    } else {
       setLoading(false);
     }
   }, [cart]);
-
 
   const subtotal = total;
   const finalTotal = subtotal; // no shipping added
@@ -71,7 +69,7 @@ useEffect(() => {
   if (loading) {
     return (
       <div className="flex justify-center items-center py-20">
-          <span className="loader"></span>
+        <span className="loader"></span>
       </div>
     );
   }
@@ -216,9 +214,9 @@ useEffect(() => {
           </div>
         </div>
 
- {/* RIGHT SIDE - ORDER SUMMARY */}
+        {/* RIGHT SIDE - ORDER SUMMARY */}
         <div className="space-y-6">
-          {allProducts.map((product) => (
+          {allProducts?.map((product) => (
             <div key={product.id} className="flex items-center gap-4 mb-6 mt-8">
               <div
                 className="relative border border-gray-200 p-4 rounded-md"
