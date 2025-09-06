@@ -6,12 +6,8 @@ import Zoom from "react-medium-image-zoom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "react-medium-image-zoom/dist/styles.css";
-// import "slick-carousel/slick/slick.css"; 
-// import "slick-carousel/slick/slick-theme.css";
-// import Slider from 'react-slick';
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
-
 
 function ProductDetailsModal({ productId, product, onClose }) {
   const [productData, setProductData] = useState(product || null);
@@ -21,9 +17,10 @@ function ProductDetailsModal({ productId, product, onClose }) {
   const { addToWishList, removeFromWishList, wishList } = useWishList();
   const isInCart = (id) => cart.some((item) => item.id === id);
   const isInWishlist = (id) => wishList.some((item) => item.id === id);
+
   useEffect(() => {
     async function fetchProduct() {
-      if (productId && !product) { // لو جايب id بس
+      if (productId && !product) {
         setLoading(true);
         const { data, error } = await supabase
           .from("products")
@@ -43,119 +40,74 @@ function ProductDetailsModal({ productId, product, onClose }) {
   }, [productId, product]);
 
   useEffect(() => {
-    //Fetch From 'products' table 
-    // async function fetchRelatedProducts() {
-    //   if (productData) {
-    //     const { data: relatedData } = await supabase
-    //       .from("products")
-    //       .select("*")
-    //       .eq("category_id", productData.category_id)
-    //       .neq("id", productData.id)
-    //       .limit(6);
-    //       setRelated(relatedData || []);
-        
-    //     }
-    //   }
-    //   fetchRelatedProducts();
-  
-  // fetch depending on 'product_categories' table
-  async function fetchRelatedProductsId() {
-  if (!productData) return;
-  //step 1 get the category id of the current product
-  const {data:catId,error:catError}= await supabase.from('product_categories').select('category_id').eq('product_id',productData.id);
-  if(catError){
-    console.error(catError);
-    return;
-  }
-  // S
-  // tep 2: Get related product IDs from the same category, excluding current product
- 
-  const { data: relatedIds, error: idsError } = await supabase
-    .from('product_categories')
-    .select('product_id')
-    .eq('category_id', catId[0].category_id)
-    .neq('product_id', productData.id)
-    .limit(8);
-   
+    async function fetchRelatedProductsId() {
+      if (!productData) return;
+      const { data: catId, error: catError } = await supabase
+        .from("product_categories")
+        .select("category_id")
+        .eq("product_id", productData.id);
 
-  if (idsError) {
-    console.error("Error fetching related IDs:", idsError);
-    return;
-  }
-  console.log(relatedIds);
-  if (relatedIds?.length) {
-    
-    const relatedIdsArr = relatedIds.map(item => item.product_id);
-    // Step 3: Get product details from 'products' table
-    const { data: relatedProducts, error: productsError } = await supabase
-      .from('products')
-      .select('*')
-      .in('id', relatedIdsArr);
+      if (catError) {
+        console.error(catError);
+        return;
+      }
 
-    if (productsError) {
-      console.error("Error fetching related products:", productsError);
-      return;
+      const { data: relatedIds, error: idsError } = await supabase
+        .from("product_categories")
+        .select("product_id")
+        .eq("category_id", catId[0].category_id)
+        .neq("product_id", productData.id)
+        .limit(8);
+
+      if (idsError) {
+        console.error("Error fetching related IDs:", idsError);
+        return;
+      }
+
+      if (relatedIds?.length) {
+        const relatedIdsArr = relatedIds.map((item) => item.product_id);
+        const { data: relatedProducts, error: productsError } = await supabase
+          .from("products")
+          .select("*")
+          .in("id", relatedIdsArr);
+
+        if (productsError) {
+          console.error("Error fetching related products:", productsError);
+          return;
+        }
+
+        setRelated(relatedProducts || []);
+      } else {
+        setRelated([]);
+      }
     }
-
-    setRelated(relatedProducts || []);
-  } else {
-    setRelated([]); // No related IDs found
-  }
-}
     fetchRelatedProductsId();
   }, [productData]);
 
-//related products slider
-const NextArrow = ({ onClick }) => (
-  <div className="custom-arrow next-arrow" onClick={onClick}>
-    <i className="fa-solid fa-angle-right"></i>
-  </div>
-);
+  const NextArrow = ({ onClick }) => (
+    <div className="custom-arrow next-arrow" onClick={onClick}>
+      <i className="fa-solid fa-angle-right"></i>
+    </div>
+  );
 
-const PrevArrow = ({ onClick }) => (
-  <div className="custom-arrow prev-arrow" onClick={onClick}>
-    <i className="fa-solid fa-angle-left"></i>
-  </div>
-);
+  const PrevArrow = ({ onClick }) => (
+    <div className="custom-arrow prev-arrow" onClick={onClick}>
+      <i className="fa-solid fa-angle-left"></i>
+    </div>
+  );
 
-  const sliderSettings = {
-  infinite: true,
-  autoplay: true,
-  slidesToShow: 6,
-  slidesToScroll: 1,
-  speed: 500,
-  nextArrow: <NextArrow />,
-  prevArrow: <PrevArrow />,
-  responsive: [
-    {
-      breakpoint: 768,
-      settings: {
-        slidesToShow: 3,
-      }
-    },
-    {
-      breakpoint: 500,
-      settings: {
-        slidesToShow: 2,
-      }
-    },{
-      breakpoint: 350,
-      settings: {
-        slidesToShow: 1,
-      }
-    }
-  ]
-  };
   if (loading) {
-    return <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-      <span className="loader"></span>
-    </div>;
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+        <span className="loader"></span>
+      </div>
+    );
   }
 
   if (!productData) return null;
 
   return (
-  <div className="fixed inset-0 flex items-center justify-center z-50">
+    <div className="fixed inset-0 flex items-center justify-center z-50">
       {/* Background Overlay */}
       <div
         className="bg-black opacity-50 absolute inset-0"
@@ -203,7 +155,8 @@ const PrevArrow = ({ onClick }) => (
               {productData.name}
             </h2>
             <p className="text-sm sm:text-base md:text-xl text-brand-main font-bold mt-4">
-              <span className="text-gray-400 mr-0.5 font-normal">$</span>{productData.price}
+              <span className="text-gray-400 mr-0.5 font-normal">$</span>
+              {productData.price}
             </p>
             <p className="text-gray-600 mt-2">{productData.description}</p>
             <p
@@ -238,7 +191,9 @@ const PrevArrow = ({ onClick }) => (
             </div>
             <button
               className={`mt-4 py-2 font-semibold tracking-widest w-full bg-brand-main ${
-                isInCart(productData.id) ? "hover:bg-brand-red" : "hover:bg-[#2e9b8d]"
+                isInCart(productData.id)
+                  ? "hover:bg-brand-red"
+                  : "hover:bg-[#2e9b8d]"
               } text-white rounded-sm block transition-all duration-300`}
               onClick={() => {
                 isInCart(productData.id)
@@ -250,211 +205,188 @@ const PrevArrow = ({ onClick }) => (
               {isInCart(productData.id) ? "Remove from" : "Add to"} Cart
             </button>
             <div className="grid grid-cols-2 gap-4 my-2">
-            <button
-  className={`py-2 font-semibold tracking-widest text-black block rounded-lg border border-[#DEE5EA] transition-all duration-300 hover:bg-brand-main hover:text-white`}
-  onClick={() => {
-    isInWishlist(productData.id)
-      ? removeFromWishList(productData.id)
-      : addToWishList(productData);
-  }}
->
-  <i
-    className={`${
-      isInWishlist(productData.id)
-        ? "fa-solid text-brand-main"
-        : "fa-regular"
-    } fa-heart`}
-  ></i>{" "}
-  Wishlist
-</button>
+              <button
+                className={`py-2 font-semibold tracking-widest text-black block rounded-lg border border-[#DEE5EA] transition-all duration-300 hover:bg-brand-main hover:text-white`}
+                onClick={() => {
+                  isInWishlist(productData.id)
+                    ? removeFromWishList(productData.id)
+                    : addToWishList(productData);
+                }}
+              >
+                <i
+                  className={`${
+                    isInWishlist(productData.id)
+                      ? "fa-solid text-brand-main"
+                      : "fa-regular"
+                  } fa-heart`}
+                ></i>{" "}
+                Wishlist
+              </button>
 
-         <button
-  onClick={() => {
-    const productUrl = `${window.location.origin}/product/${r.id}`;
-    if (navigator.share) {
-      navigator.share({
-        title: r.name,
-        text: "Check this product!",
-        url: productUrl,
-      });
-    } else {
-      // fallback: افتح واتساب مباشرة
-      window.open(
-        `https://wa.me/?text=${encodeURIComponent(productUrl)}`,
-        "_blank"
-      );
-    }
-  }}
-  className="py-2 font-semibold tracking-widest text-black block rounded-lg border border-[#DEE5EA] transition-all duration-300 hover:bg-brand-main hover:text-white"
->
-  <i className="fa-solid fa-share"></i> Share
-</button>
-
-
+              <button
+                onClick={() => {
+                  const productUrl = `${window.location.origin}/product/${productData.id}`;
+                  if (navigator.share) {
+                    navigator.share({
+                      title: productData.name,
+                      text: "Check this product!",
+                      url: productUrl,
+                    });
+                  } else {
+                    window.open(
+                      `https://wa.me/?text=${encodeURIComponent(productUrl)}`,
+                      "_blank"
+                    );
+                  }
+                }}
+                className="py-2 font-semibold tracking-widest text-black block rounded-lg border border-[#DEE5EA] transition-all duration-300 hover:bg-brand-main hover:text-white"
+              >
+                <i className="fa-solid fa-share"></i> Share
+              </button>
             </div>
-            {productData.description && <div className="pt-8">
+            {productData.description && (
+              <div className="pt-8">
                 <h4 className="font-semibold mb-3">Product Details</h4>
-                <p className="font-normal text-sm leading-6">{productData.description ? productData.description : "No description available. lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. lorem ipsum dolor sit amet."}</p>
-            </div>}
+                <p className="font-normal text-sm leading-6">
+                  {productData.description
+                    ? productData.description
+                    : "No description available. lorem ipsum dolor sit amet."}
+                </p>
+              </div>
+            )}
           </div>
         </div>
 
         {/* 🟢 منتجات مشابهة */}
-      {related.length > 0 ? (
-  <div className="mt-20">
-    <h3 className="text-base sm:text-lg md:text-xl font-bold mb-4">
-      Related Products
-    </h3>
+        {related.length > 0 ? (
+          <div className="mt-20 ">
+            <h3 className="text-base sm:text-lg md:text-xl font-bold mb-4">
+              Related Products
+            </h3>
 
-    <Splide
-      options={{
-        type: "loop",
-        perPage: 4,
-        perMove: 1,
-        autoplay: true,
-        pagination: false,
-        arrows: true,
-        breakpoints: {
-          1280: { perPage: 3 },
-          1024: { perPage: 2 },
-          640: { perPage: 1 },
-        },
-      }}
-      className="custom-splide w-full px-2"
-    >
-      {related.length > 0 ? (
-  <div className="mt-20 ">
-    <h3 className="text-base sm:text-lg md:text-xl font-bold mb-4">
-      Related Products
-    </h3>
-
-    {related.length > 4 ? (
-      <Splide
-        options={{
-          type: "loop",
-          perPage: 4,
-          perMove: 1,
-          gap: "1rem",
-          pagination: false,
-          arrows: true,
-          breakpoints: {
-            1280: { perPage: 3 },
-            1024: { perPage: 2 },
-            640: { perPage: 1 },
-          },
-        }}
-        aria-label="Related Products"
-        className="w-full px-2"
-      >
-        {related.map((r) => (
-          <SplideSlide key={r.id}>
-            <div className=" cursor-pointer relative border border-gray-200">
-              <div className="relative">
-                <img
-                  src={r.image}
-                  alt={r.name}
-                  className="block relative mx-auto h-32 object-cover rounded"
-                  onClick={() => setProductData(r)}
-                />
-                {r.discount_price ? (
-                  <span className="absolute top-0 left-0 bg-brand-main text-white text-xs uppercase py-1 px-2">
-                    {r.discount_price}%
-                  </span>
-                ) : null}
-                <span
-                  className={`absolute right-2 bottom-0 text-white z-40 transition-all duration-200 hover:bg-brand-main ${
-                    isInCart(r.id) ? "bg-brand-main" : "bg-gray-400"
-                  } text-xs rounded-full size-6 flex justify-center items-center`}
-                  onClick={() => {
-                    isInCart(r.id)
-                      ? removeFromCart(r.id)
-                      : addToCart(r.id, r.price);
-                  }}
-                >
-                  <i
-                    className={`fa-solid ${
-                      isInCart(r.id) ? "fa-minus" : "fa-plus"
-                    }`}
-                  ></i>
-                </span>
-              </div>
-              <div onClick={() => setProductData(r)}>
-                <p className="text-brand-main text-sm px-3">
-                  {r.discount_price && (
-                    <span className="line-through text-brand-light">
-                      ${r.discount_price}
-                    </span>
-                  )}{" "}
-                  ${r.price}
-                </p>
-                <h4 className="font-semibold text-sm px-3 mb-3">{r.name}</h4>
-              </div>
-            </div>
-          </SplideSlide>
-        ))}
-      </Splide>
-    ) : (
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        {related.map((r) => (
-          <div
-            key={r.id}
-            className=" cursor-pointer relative border border-gray-200"
-          >
-            <div className="relative">
-              <img
-                src={r.image}
-                alt={r.name}
-                className="block relative mx-auto h-32 object-cover rounded"
-                onClick={() => setProductData(r)}
-              />
-              {r.discount_price ? (
-                <span className="absolute top-0 left-0 bg-brand-main text-white text-xs uppercase py-1 px-2">
-                  {r.discount_price}%
-                </span>
-              ) : null}
-              <span
-                className={`absolute right-2 bottom-0 text-white z-40 transition-all duration-200 hover:bg-brand-main ${
-                  isInCart(r.id) ? "bg-brand-main" : "bg-gray-400"
-                } text-xs rounded-full size-6 flex justify-center items-center`}
-                onClick={() => {
-                  isInCart(r.id)
-                    ? removeFromCart(r.id)
-                    : addToCart(r.id, r.price);
+            {related.length > 4 ? (
+              <Splide
+                options={{
+                  type: "loop",
+                  perPage: 4,
+                  perMove: 1,
+                  gap: "1rem",
+                  pagination: false,
+                  arrows: true,
+                  breakpoints: {
+                    1280: { perPage: 3 },
+                    1024: { perPage: 2 },
+                    640: { perPage: 1 },
+                  },
                 }}
+                className="w-full px-2"
               >
-                <i
-                  className={`fa-solid ${
-                    isInCart(r.id) ? "fa-minus" : "fa-plus"
-                  }`}
-                ></i>
-              </span>
-            </div>
-            <div onClick={() => setProductData(r)}>
-              <p className="text-brand-main text-sm px-3">
-                {r.discount_price && (
-                  <span className="line-through text-brand-light">
-                    ${r.discount_price}
-                  </span>
-                )}{" "}
-                ${r.price}
-              </p>
-              <h4 className="font-semibold text-sm px-3 mb-3">{r.name}</h4>
-            </div>
+                {related.map((r) => (
+                  <SplideSlide key={r.id}>
+                    <div className=" cursor-pointer relative border border-gray-200">
+                      <div className="relative">
+                        <img
+                          src={r.image}
+                          alt={r.name}
+                          className="block relative mx-auto h-32 object-cover rounded"
+                          onClick={() => setProductData(r)}
+                        />
+                        {r.discount_price ? (
+                          <span className="absolute top-0 left-0 bg-brand-main text-white text-xs uppercase py-1 px-2">
+                            {r.discount_price}%
+                          </span>
+                        ) : null}
+                        <span
+                          className={`absolute right-2 bottom-0 text-white z-40 transition-all duration-200 hover:bg-brand-main ${
+                            isInCart(r.id) ? "bg-brand-main" : "bg-gray-400"
+                          } text-xs rounded-full size-6 flex justify-center items-center`}
+                          onClick={() => {
+                            isInCart(r.id)
+                              ? removeFromCart(r.id)
+                              : addToCart(r.id, r.price);
+                          }}
+                        >
+                          <i
+                            className={`fa-solid ${
+                              isInCart(r.id) ? "fa-minus" : "fa-plus"
+                            }`}
+                          ></i>
+                        </span>
+                      </div>
+                      <div onClick={() => setProductData(r)}>
+                        <p className="text-brand-main text-sm px-3">
+                          {r.discount_price && (
+                            <span className="line-through text-brand-light">
+                              ${r.discount_price}
+                            </span>
+                          )}{" "}
+                          ${r.price}
+                        </p>
+                        <h4 className="font-semibold text-sm px-3 mb-3">
+                          {r.name}
+                        </h4>
+                      </div>
+                    </div>
+                  </SplideSlide>
+                ))}
+              </Splide>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                {related.map((r) => (
+                  <div
+                    key={r.id}
+                    className=" cursor-pointer relative border border-gray-200"
+                  >
+                    <div className="relative">
+                      <img
+                        src={r.image}
+                        alt={r.name}
+                        className="block relative mx-auto h-32 object-cover rounded"
+                        onClick={() => setProductData(r)}
+                      />
+                      {r.discount_price ? (
+                        <span className="absolute top-0 left-0 bg-brand-main text-white text-xs uppercase py-1 px-2">
+                          {r.discount_price}%
+                        </span>
+                      ) : null}
+                      <span
+                        className={`absolute right-2 bottom-0 text-white z-40 transition-all duration-200 hover:bg-brand-main ${
+                          isInCart(r.id) ? "bg-brand-main" : "bg-gray-400"
+                        } text-xs rounded-full size-6 flex justify-center items-center`}
+                        onClick={() => {
+                          isInCart(r.id)
+                            ? removeFromCart(r.id)
+                            : addToCart(r.id, r.price);
+                        }}
+                      >
+                        <i
+                          className={`fa-solid ${
+                            isInCart(r.id) ? "fa-minus" : "fa-plus"
+                          }`}
+                        ></i>
+                      </span>
+                    </div>
+                    <div onClick={() => setProductData(r)}>
+                      <p className="text-brand-main text-sm px-3">
+                        {r.discount_price && (
+                          <span className="line-through text-brand-light">
+                            ${r.discount_price}
+                          </span>
+                        )}{" "}
+                        ${r.price}
+                      </p>
+                      <h4 className="font-semibold text-sm px-3 mb-3">
+                        {r.name}
+                      </h4>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-        ))}
-      </div>
-    )}
-  </div>
-) : null}
-
-    </Splide>
-  </div>
-) : null}
-
-
+        ) : null}
       </div>
     </div>
-    
   );
 }
 
