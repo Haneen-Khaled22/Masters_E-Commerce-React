@@ -16,39 +16,35 @@ function BestSellers() {
   const settings = {
     infinite: true,
     speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 3,
     autoplay: true,
     arrows: true,
-    slidesToShow: 4,
-    slidesToScroll: 1,
     responsive: [
       {
-        breakpoint: 1536,
-        settings: {
-          slidesToShow: 4,
-        },
-      },
-      {
-        breakpoint: 1280,
+        breakpoint: 1280, // screens < 1280px
         settings: {
           slidesToShow: 3,
+          slidesToScroll: 2,
         },
       },
       {
-        breakpoint: 1024,
+        breakpoint: 1024, // screens < 1024px
         settings: {
           slidesToShow: 2,
+          slidesToScroll: 1,
         },
       },
       {
-        breakpoint: 640,
+        breakpoint: 640, // screens < 640px (mobile)
         settings: {
           slidesToShow: 1,
-          arrows: false,
+          slidesToScroll: 1,
+          arrows: true, // optional (cleaner on mobile)
         },
       },
     ],
   };
-
   const [bestSellers, setBestSellers] = useState([]);
 
   async function getBestSellers() {
