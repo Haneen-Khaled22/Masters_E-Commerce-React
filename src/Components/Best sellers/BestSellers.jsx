@@ -184,9 +184,9 @@ function BestSellers() {
                       }}
                       className={` ${
                         isInCart(p.id) ? "bg-brand-red" : "bg-brand-yellow"
-                      } hover:bg-brand-main transition-all duration-300 text-[#202435] text-sm font-medium w-full rounded-full py-1`}
+                      } hover:bg-brand-main transition-all duration-300 text-[white] font-bold text-sm font-medium w-full rounded-full py-1`}
                     >
-                      {isInCart(p.id) ? `Remove From` : `Add to cart`}
+                      {isInCart(p.id) ? `Remove from cart` : `Add to cart`}
                     </button>
                   </div>
                 </div>
