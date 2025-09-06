@@ -99,37 +99,46 @@ function ProductDetailsModal({ productId, product, onClose }) {
     fetchRelatedProductsId();
   }, [productData]);
 
+//related products slider
+const NextArrow = ({ onClick }) => (
+  <div className="custom-arrow next-arrow" onClick={onClick}>
+    <i className="fa-solid fa-angle-right"></i>
+  </div>
+);
+
+const PrevArrow = ({ onClick }) => (
+  <div className="custom-arrow prev-arrow" onClick={onClick}>
+    <i className="fa-solid fa-angle-left"></i>
+  </div>
+);
+
   const sliderSettings = {
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 3,
-    autoplay: true,
-    arrows:true,
-    responsive: [
+  infinite: true,
+  autoplay: true,
+  slidesToShow: 6,
+  slidesToScroll: 1,
+  speed: 500,
+  nextArrow: <NextArrow />,
+  prevArrow: <PrevArrow />,
+  responsive: [
     {
-      breakpoint: 1280, // screens < 1280px
+      breakpoint: 768,
       settings: {
         slidesToShow: 3,
-        slidesToScroll: 2,
-      },
+      }
     },
     {
-      breakpoint: 1024, // screens < 1024px
+      breakpoint: 500,
       settings: {
         slidesToShow: 2,
-        slidesToScroll: 1,
-      },
-    },
-    {
-      breakpoint: 640, // screens < 640px (mobile)
+      }
+    },{
+      breakpoint: 350,
       settings: {
         slidesToShow: 1,
-        slidesToScroll: 1,
-        arrows: true, // optional (cleaner on mobile)
-      },
-    },
-  ],
+      }
+    }
+  ]
   };
   if (loading) {
     return <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
@@ -155,14 +164,14 @@ function ProductDetailsModal({ productId, product, onClose }) {
           ✖
         </button>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {/* 🟢 صور المنتج مع Zoom */}
           <div>
             <Zoom>
               <img
                 src={productData.image}
                 alt={productData.name}
-                className="w-full h-80 object-cover rounded-lg"
+                className="w-full min-h-80 object-cover rounded-lg"
               />
             </Zoom>
 
