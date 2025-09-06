@@ -75,10 +75,10 @@ function Checkout() {
   }
 
   return (
-    <div className="bg-white min-h-screen py-16 px-4 md:px-12">
-      <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-10 mt-20">
+    <div className="bg-white min-h-screen py-8 px-2 sm:px-4 md:px-8 lg:px-12">
+      <div className="w-full lg:max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-10 mt-6">
         {/* LEFT SIDE - FORM */}
-        <div className="space-y-10 border-r border-gray-300 pr-8">
+        <div className="space-y-8 lg:space-y-10 lg:border-r border-gray-300 lg:pr-8">
           {/* Contact Section */}
           <div>
             <div className="flex items-center justify-between mb-4 mt-8">
