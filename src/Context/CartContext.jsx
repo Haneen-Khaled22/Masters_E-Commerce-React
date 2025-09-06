@@ -5,6 +5,7 @@ import { useAuth } from "./AuthContext";
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
+  
   const { user } = useAuth();
   // ✅ استرجاع البيانات من localStorage أول مرة
   const [cart, setCart] = useState(() => {

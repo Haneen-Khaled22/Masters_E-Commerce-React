@@ -6,9 +6,11 @@ import Zoom from "react-medium-image-zoom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "react-medium-image-zoom/dist/styles.css";
-import "slick-carousel/slick/slick.css"; 
-import "slick-carousel/slick/slick-theme.css";
-import Slider from 'react-slick';
+// import "slick-carousel/slick/slick.css"; 
+// import "slick-carousel/slick/slick-theme.css";
+// import Slider from 'react-slick';
+import { Splide, SplideSlide } from "@splidejs/react-splide";
+import "@splidejs/react-splide/css";
 
 
 function ProductDetailsModal({ productId, product, onClose }) {
@@ -299,59 +301,153 @@ const PrevArrow = ({ onClick }) => (
 
         {/* 🟢 منتجات مشابهة */}
       {related.length > 0 ? (
+  <div className="mt-20">
+    <h3 className="text-base sm:text-lg md:text-xl font-bold mb-4">
+      Related Products
+    </h3>
+
+    <Splide
+      options={{
+        type: "loop",
+        perPage: 4,
+        perMove: 1,
+        autoplay: true,
+        pagination: false,
+        arrows: true,
+        breakpoints: {
+          1280: { perPage: 3 },
+          1024: { perPage: 2 },
+          640: { perPage: 1 },
+        },
+      }}
+      className="custom-splide w-full px-2"
+    >
+      {related.length > 0 ? (
   <div className="mt-20 ">
     <h3 className="text-base sm:text-lg md:text-xl font-bold mb-4">
       Related Products
     </h3>
-    <Slider {...sliderSettings} className="w-full px-2">
-      {related.map((r) => (
-        <div
-          key={r.id}
-          className=" cursor-pointer  relative  border border-gray-200 "
-        >
-          <div className="relative">
-            <img
-              src={r.image}
-              alt={r.name}
-              className="block relative mx-auto h-32 object-cover rounded"
-              onClick={() => setProductData(r)}
-            />
-            {r.discount_price ? (
-              <span className="absolute top-0 left-0 bg-brand-main text-white text-xs  uppercase py-1 px-2">
-                {r.discount_price}%
-              </span>
-            ) : null}
-            <span
-              className={`absolute right-2 bottom-0  text-white z-40 transition-all duration-200 hover:bg-brand-main ${
-                isInCart(r.id) ? "bg-brand-main" : "bg-gray-400"
-              } text-xs rounded-full size-6 flex justify-center items-center`}
-              onClick={() => {
-                isInCart(r.id)
-                  ? removeFromCart(r.id)
-                  : addToCart(r.id, r.price);
-              }}
-            >
-              <i
-                className={`fa-solid ${
-                  isInCart(r.id) ? "fa-minus" : "fa-plus"
-                }`}
-              ></i>
-            </span>
-          </div>
-          <div onClick={() => setProductData(r)}>
-            <p className="text-brand-main text-sm px-3">
-              {r.discount_price && (
-                <span className="line-through text-brand-light">
-                  ${r.discount_price}
+
+    {related.length > 4 ? (
+      <Splide
+        options={{
+          type: "loop",
+          perPage: 4,
+          perMove: 1,
+          gap: "1rem",
+          pagination: false,
+          arrows: true,
+          breakpoints: {
+            1280: { perPage: 3 },
+            1024: { perPage: 2 },
+            640: { perPage: 1 },
+          },
+        }}
+        aria-label="Related Products"
+        className="w-full px-2"
+      >
+        {related.map((r) => (
+          <SplideSlide key={r.id}>
+            <div className=" cursor-pointer relative border border-gray-200">
+              <div className="relative">
+                <img
+                  src={r.image}
+                  alt={r.name}
+                  className="block relative mx-auto h-32 object-cover rounded"
+                  onClick={() => setProductData(r)}
+                />
+                {r.discount_price ? (
+                  <span className="absolute top-0 left-0 bg-brand-main text-white text-xs uppercase py-1 px-2">
+                    {r.discount_price}%
+                  </span>
+                ) : null}
+                <span
+                  className={`absolute right-2 bottom-0 text-white z-40 transition-all duration-200 hover:bg-brand-main ${
+                    isInCart(r.id) ? "bg-brand-main" : "bg-gray-400"
+                  } text-xs rounded-full size-6 flex justify-center items-center`}
+                  onClick={() => {
+                    isInCart(r.id)
+                      ? removeFromCart(r.id)
+                      : addToCart(r.id, r.price);
+                  }}
+                >
+                  <i
+                    className={`fa-solid ${
+                      isInCart(r.id) ? "fa-minus" : "fa-plus"
+                    }`}
+                  ></i>
                 </span>
-              )}{" "}
-              ${r.price}
-            </p>
-            <h4 className="font-semibold text-sm px-3 mb-3">{r.name}</h4>
+              </div>
+              <div onClick={() => setProductData(r)}>
+                <p className="text-brand-main text-sm px-3">
+                  {r.discount_price && (
+                    <span className="line-through text-brand-light">
+                      ${r.discount_price}
+                    </span>
+                  )}{" "}
+                  ${r.price}
+                </p>
+                <h4 className="font-semibold text-sm px-3 mb-3">{r.name}</h4>
+              </div>
+            </div>
+          </SplideSlide>
+        ))}
+      </Splide>
+    ) : (
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        {related.map((r) => (
+          <div
+            key={r.id}
+            className=" cursor-pointer relative border border-gray-200"
+          >
+            <div className="relative">
+              <img
+                src={r.image}
+                alt={r.name}
+                className="block relative mx-auto h-32 object-cover rounded"
+                onClick={() => setProductData(r)}
+              />
+              {r.discount_price ? (
+                <span className="absolute top-0 left-0 bg-brand-main text-white text-xs uppercase py-1 px-2">
+                  {r.discount_price}%
+                </span>
+              ) : null}
+              <span
+                className={`absolute right-2 bottom-0 text-white z-40 transition-all duration-200 hover:bg-brand-main ${
+                  isInCart(r.id) ? "bg-brand-main" : "bg-gray-400"
+                } text-xs rounded-full size-6 flex justify-center items-center`}
+                onClick={() => {
+                  isInCart(r.id)
+                    ? removeFromCart(r.id)
+                    : addToCart(r.id, r.price);
+                }}
+              >
+                <i
+                  className={`fa-solid ${
+                    isInCart(r.id) ? "fa-minus" : "fa-plus"
+                  }`}
+                ></i>
+              </span>
+            </div>
+            <div onClick={() => setProductData(r)}>
+              <p className="text-brand-main text-sm px-3">
+                {r.discount_price && (
+                  <span className="line-through text-brand-light">
+                    ${r.discount_price}
+                  </span>
+                )}{" "}
+                ${r.price}
+              </p>
+              <h4 className="font-semibold text-sm px-3 mb-3">{r.name}</h4>
+            </div>
           </div>
-        </div>
-      ))}
-    </Slider>
+        ))}
+      </div>
+    )}
+  </div>
+) : null}
+
+    </Splide>
   </div>
 ) : null}
 

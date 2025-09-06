@@ -102,7 +102,7 @@ body {
   z-index: 50 !important;
 }
 
-/* لون السهم */
+/* لون السهم
 .best-sellers-slider .slick-prev:before,
 .best-sellers-slider .slick-next:before {
   color: black !important;
@@ -122,7 +122,22 @@ body {
 }
 .slick-list {
   margin: 0 -8px;
+} */
+
+.custom-splide .splide__arrow {
+  top: 50%;               /* في النص */
+  transform: translateY(-50%);
+  background: white;       /* خلفية خفيفة */
+  border: 1px solid black;  /* نفس البوردر */
+  /* box-shadow: 0 2px 6px rgba(0,0,0,0.1); */
 }
 
+.custom-splide .splide__arrow--prev {
+  left: -1rem;   /* تبعد شوية عن الكارد */
+}
+
+.custom-splide .splide__arrow--next {
+  right: -1rem;  /* تبعد شوية عن الكارد */
+}
 
 
