@@ -5,11 +5,13 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from 'react-slick';
 import { Link, useNavigate } from 'react-router-dom';
 import ProductDetailsModal from '../ProductDetails/ProductDetails';
+import { useCart } from '../../Context/CartContext';
 
 function BestSellers() {
-
+  const{cart,addToCart,removeFromCart}=useCart();
+  const isInCart = (id) => cart.some((item) => item.id === id);
   const [loading,setLoading] = useState(false);
-    const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
 
 
@@ -175,13 +177,12 @@ function BestSellers() {
 
   {/* أزرار الكمية (تحت ثابتة) */}
   <div className="mt-4 flex items-center justify-between border rounded-3xl border-gray-200">
-    <button className="bg-gray-200 rounded-tl-full rounded-bl-full w-9 h-9 flex items-center justify-center text-lg">
-      -
-    </button>
-    <span className="text-md">{p.quantity}</span>
-    <button className="bg-yellow-400 rounded-tr-full rounded-br-full w-9 h-9 flex items-center justify-center text-lg">
-      +
-    </button>
+    <button onClick={(e)=>{
+      e.stopPropagation();
+      isInCart(p.id)?removeFromCart(p.id):
+      addToCart(p.id,p.price);
+    }} 
+    className={` ${isInCart(p.id)?'bg-brand-red':'bg-brand-yellow'} hover:bg-brand-main transition-all duration-300 text-[#202435] text-sm font-medium w-full rounded-full py-1`} >{isInCart(p.id)?`Remove From`:`Add to cart`}</button>
   </div>
   </div>
 </div>
