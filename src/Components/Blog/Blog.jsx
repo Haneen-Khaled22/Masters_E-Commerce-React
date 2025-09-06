@@ -7,9 +7,9 @@ import { IoLogoInstagram } from "react-icons/io5";
 import blog1 from "../../assets/blog-3.jpg.png";
 import blog2 from "../../assets/blog-5.jpg.png";
 import blog3 from "../../assets/sidebar-banner.gif.png";
-import blog4 from "../../assets/link.png";
-import blog5 from "../../assets/link2.png";
-import blog6 from "../../assets/link3.png";
+import blog4 from "../../assets/Link.png";
+import blog5 from "../../assets/Link2.png";
+import blog6 from "../../assets/Link3.png";
 
 const BlogPage = () => {
   return (
