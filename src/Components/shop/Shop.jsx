@@ -81,7 +81,7 @@ function Shop() {
         } transition-all duration-200`}
         onClick={() => setShowAside(!showAside)}
       >
-        <i className="fa-solid fa-filter"></i>
+        <i className="fas fa-bars text-brand-main"></i>
       </span>
       <div
         className={`absolute md:static md:min-w-60 ${
