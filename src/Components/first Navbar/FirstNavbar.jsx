@@ -19,7 +19,7 @@ function FirstNavbar() {
         <ul className='flex space-x-6 text-sm font-normal '>
             <li><NavLink to={'/aboutus'}>About us</NavLink></li>
             <li>Compare</li>
-            <li>Wishlist</li>
+            <li><NavLink to={'/wishlist'}>Wishlist</NavLink></li>
         </ul>
     </div>
     <div className='hidden md:block'>

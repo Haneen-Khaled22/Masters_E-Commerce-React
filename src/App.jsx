@@ -25,6 +25,7 @@ import ProductDetails from './Components/ProductDetails/ProductDetails';
 import CategoryDetails from './Components/CategoryDetails/CategoryDetails';
 import ProductDetailsModal from './Components/ProductDetails/ProductDetails';
 import { LanguageProvider } from './Context/LanguageContext';
+import Wishlist from './Components/WishList/wishlist';
 
 function App() {
   let router = createBrowserRouter([
@@ -42,7 +43,7 @@ function App() {
         {path:"productdetails/:id",element:<ProductDetailsModal/>},
         {path:"categorydetails/:id",element:<CategoryDetails/>},
         {path:"blog",element:<Blog/>},
-        
+        {path:"wishlist",element:<Wishlist/>},
         {path:"checkout",element:<Checkout/>},
         {path:"*",element:<NotFound/>},
 
