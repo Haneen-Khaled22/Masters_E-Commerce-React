@@ -1,6 +1,6 @@
 import React from "react";
 import footerImg from "../../assets/footer-img.png";
-import icon1 from "../../assets/icon (1).png";
+import icon1 from "../../assets/Icon (1).png";
 import googlePlay from "../../assets/google-play.png.png";
 import appStore from "../../assets/app-store.png.png";
 import payments from "../../assets/payments.jpg.png";
