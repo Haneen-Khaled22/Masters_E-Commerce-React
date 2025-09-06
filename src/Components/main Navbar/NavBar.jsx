@@ -48,7 +48,7 @@ function NavBar({ searchTerm, setsearchTerm }) {
 
           {/* Center: Search */}
           <div className="flex flex-1 justify-center">
-            <div className="relative w-3/4 md:w-[50%]">
+            <div className="relative hidden md:block w-3/4 md:w-[50%]">
               <input
                 value={searchTerm}
                 onChange={(e) => setsearchTerm(e.target.value)}
