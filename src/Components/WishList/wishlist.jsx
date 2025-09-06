@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { supabase } from "../../Helper/supabase-client";
+import React, { use, useEffect, useState } from "react";
 import ProductDetailsModal from "../ProductDetails/ProductDetails";
 import { useWishList } from "../../Context/WishListContext";
 import { useCart } from "../../Context/CartContext";
@@ -7,34 +6,11 @@ import { useCart } from "../../Context/CartContext";
 function Wishlist() {
   const { wishList, removeFromWishList } = useWishList();
   const { cart, addToCart, removeFromCart } = useCart();
-
-  const [loading, setLoading] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [wishproducts, setWishProducts] = useState([]);
   const isInCart = (id) => cart.some((item) => item.id === id);
   // pagination states
   const [page, setPage] = useState(1);
   const productsPerPage = 8;
-
-  async function getWishListProducts() {
-    setLoading(true);
-    const { data, error } = await supabase.from("products").select("*");
-    setLoading(false);
-
-    if (error) {
-      console.error("Error fetching products:", error.message);
-      return [];
-    }
-    return data;
-  }
-
-  useEffect(() => {
-    async function fetchData() {
-      const products = await getWishListProducts();
-      setWishProducts(products);
-    }
-    fetchData();
-  }, []);
 
   // حساب عدد الصفحات
   const totalPages = Math.ceil(wishList.length / productsPerPage);
@@ -43,7 +19,11 @@ function Wishlist() {
   const indexOfLast = page * productsPerPage;
   const indexOfFirst = indexOfLast - productsPerPage;
   const currentProducts = wishList.slice(indexOfFirst, indexOfLast);
-
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    setLoading(false);
+  },[])
+  
   return (
     <div className="my-5 container">
       <div className="flex justify-between items-center">
@@ -55,12 +35,12 @@ function Wishlist() {
           <span className="loader"></span>
         </div>
       ) : wishList.length === 0 ? (
-        <p className="text-center text-gray-500 py-10">No products found.</p>
+        <p className="text-center text-gray-500 py-10">There is no product in your wish list.</p>
       ) : (
         <>
           {/* Products Grid */}
           <div className="grid gap-0 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 border border-gray-200 rounded-lg">
-            {wishList.map((p) => (
+            {currentProducts.map((p) => (
               <div
                 key={p.id}
                 className="bg-white relative flex flex-col h-[340px] px-3 pt-2 pb-3 justify-between cursor-pointer border-r border-b border-gray-200"
@@ -163,7 +143,7 @@ function Wishlist() {
                     onClick={() => {
                       isInCart(p.id) ? removeFromCart(p.id) : addToCart(p.id, p.price);
                     }}
-                    className="w-full bg-[#35AFA0] text-white text-sm font-bold py-2 rounded hover:bg-[#2a897d]"
+                    className="w-full bg-brand-main text-white text-sm font-bold py-2 rounded transition-all duration-200 hover:bg-[#2a897d]"
                   >
                     {`${isInCart(p.id) ? "Remove from" : "Add to"} Cart`}
                   </button>
