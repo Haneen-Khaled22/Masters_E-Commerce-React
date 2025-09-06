@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useCart } from "../../Context/CartContext";
 
 function Checkout() {
-  const { cart, total } = useCart();
+  const { cart, total,removeFromCart,plus,minus } = useCart();
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -216,7 +216,12 @@ function Checkout() {
 
         {/* RIGHT SIDE - ORDER SUMMARY */}
         <div className="space-y-6">
-          {allProducts?.map((product) => (
+          {
+          allProducts?.map((product) => {
+            const cartItem = cart.find((item) => item.id === product.id);
+            if (!cartItem) return null;
+            return(
+              
             <div key={product.id} className="flex items-center gap-4 mb-6 mt-8">
               <div
                 className="relative border border-gray-200 p-4 rounded-md"
@@ -231,14 +236,19 @@ function Checkout() {
                   className="w-16 h-16 object-contain rounded-md"
                 />
                 <div className="absolute top-[-8px] left-[-8px] bg-gray-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">
-                  {cart.find((item) => item.id === product.id).quantity}
+                  {cart.find((item) => item.id === product.id)?.quantity || 0}
                 </div>
               </div>
-              <span>{product.name}</span>
-              <div className="flex-1 text-sm">
-                <p className="font-medium text-gray-800">{product.title}</p>
+              <span className="truncate flex-1">{product.name}</span>
+              <div className="text-sm flex gap-2 justify-end">
+                <button className="size-8 flex justify-center items-center rounded-md bg-brand-grey hover:opacity-80 transition-all duration-300"
+                onClick={()=>{minus(product.id)}}><i className="fa-solid fa-minus"></i></button>
+                <button className="size-8 flex justify-center items-center rounded-md bg-brand-grey hover:opacity-80 transition-all duration-300"
+                onClick={()=>{plus(product.id,product.price)}}><i className="fa-solid fa-plus"></i></button>
+                <button className="py-2 px-4 bg-brand-red rounded-md text-white uppercase font-semibold tracking-wider hover:opacity-80 transition-all duration-300"
+                onClick={()=>{removeFromCart(product.id)}}>Remove</button>
               </div>
-              <p className="font-semibold text-sm text-gray-800">
+              <p className="font-semibold text-sm w-8 text-gray-800">
                 $
                 {(
                   product.price *
@@ -246,7 +256,8 @@ function Checkout() {
                 ).toFixed(2)}
               </p>
             </div>
-          ))}
+            );
+})}
 
           {/* Summary totals */}
           <div className="pt-6 space-y-2 text-sm">
