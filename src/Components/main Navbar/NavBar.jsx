@@ -5,9 +5,11 @@ import { useAuth } from "../../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useCart } from "../../Context/CartContext";
+import { useWishList } from "../../Context/WishListContext";
 
 function NavBar({searchTerm,setsearchTerm}) {
-  const { cart, total } = useCart();
+  const { cart, total,clearCart } = useCart();
+  const{clearWishList}=useWishList();
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -29,6 +31,8 @@ function NavBar({searchTerm,setsearchTerm}) {
     await logout();
     navigate('/login');
     console.log('logged out');
+    clearCart();
+    clearWishList();
     toast.success('logged out successfully');
   }
   return (

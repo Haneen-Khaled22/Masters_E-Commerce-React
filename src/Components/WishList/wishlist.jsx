@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../Helper/supabase-client";
 import ProductDetailsModal from "../ProductDetails/ProductDetails";
+import { useWishList } from "../../Context/WishListContext";
+import { useCart } from "../../Context/CartContext";
 
 function Wishlist() {
+  const { wishList, removeFromWishList } = useWishList();
+  const { cart, addToCart, removeFromCart } = useCart();
+
   const [loading, setLoading] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [wishproducts, setWishProducts] = useState([]);
-
+  const isInCart = (id) => cart.some((item) => item.id === id);
   // pagination states
   const [page, setPage] = useState(1);
   const productsPerPage = 8;
@@ -32,12 +37,12 @@ function Wishlist() {
   }, []);
 
   // حساب عدد الصفحات
-  const totalPages = Math.ceil(wishproducts.length / productsPerPage);
+  const totalPages = Math.ceil(wishList.length / productsPerPage);
 
   // تحديد بداية ونهاية الصفحة
   const indexOfLast = page * productsPerPage;
   const indexOfFirst = indexOfLast - productsPerPage;
-  const currentProducts = wishproducts.slice(indexOfFirst, indexOfLast);
+  const currentProducts = wishList.slice(indexOfFirst, indexOfLast);
 
   return (
     <div className="my-5 container">
@@ -49,27 +54,30 @@ function Wishlist() {
         <div className="flex justify-center items-center py-20">
           <span className="loader"></span>
         </div>
-      ) : wishproducts.length === 0 ? (
+      ) : wishList.length === 0 ? (
         <p className="text-center text-gray-500 py-10">No products found.</p>
       ) : (
         <>
           {/* Products Grid */}
           <div className="grid gap-0 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 border border-gray-200 rounded-lg">
-            {currentProducts.map((p) => (
+            {wishList.map((p) => (
               <div
                 key={p.id}
-                onClick={() => setSelectedProduct(p)}
                 className="bg-white relative flex flex-col h-[340px] px-3 pt-2 pb-3 justify-between cursor-pointer border-r border-b border-gray-200"
               >
                 {/* Offer Badge */}
-                {p.offer && (
+                {p.discount_price && (
                   <div className="absolute top-4 left-2 bg-[#35AFA0] text-white text-xs font-bold px-2 py-1 rounded">
-                    {p.offer}%
+                    {Math.ceil(
+                      ((p.discount_price - p.price) / p.discount_price) * 100
+                    )}
+                    %
                   </div>
                 )}
 
                 {/* Product Content */}
-                <div className="flex flex-col flex-grow space-y-2">
+                <div className="flex flex-col flex-grow space-y-2"
+                onClick={() => setSelectedProduct(p)}>
                   <img
                     src={p.image}
                     alt={p.name}
@@ -124,12 +132,12 @@ function Wishlist() {
 
                     {/* Favorite Icon */}
                     <button
+                      title="Remove from Wishlist"
                       onClick={(e) => {
                         e.stopPropagation();
-                        setWishProducts((prev) =>
-                          prev.filter((item) => item.id !== p.id)
-                        );
+                        removeFromWishList(p.id);
                       }}
+                      className="cursor-pointer"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -152,13 +160,12 @@ function Wishlist() {
                 {/* Add to Cart Button (with spacing) */}
                 <div className="mt-4 mb-2">
                   <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      console.log("Added to cart:", p);
+                    onClick={() => {
+                      isInCart(p.id) ? removeFromCart(p.id) : addToCart(p.id, p.price);
                     }}
                     className="w-full bg-[#35AFA0] text-white text-sm font-bold py-2 rounded hover:bg-[#2a897d]"
                   >
-                    Add to Cart
+                    {`${isInCart(p.id) ? "Remove from" : "Add to"} Cart`}
                   </button>
                 </div>
               </div>
