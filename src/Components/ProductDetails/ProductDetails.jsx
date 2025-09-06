@@ -41,19 +41,63 @@ function ProductDetailsModal({ productId, product, onClose }) {
   }, [productId, product]);
 
   useEffect(() => {
-    async function fetchRelatedProducts() {
-      if (productData) {
-        const { data: relatedData } = await supabase
-          .from("products")
-          .select("*")
-          .eq("category_id", productData.category_id)
-          .neq("id", productData.id)
-          .limit(6);
-          setRelated(relatedData || []);
+    //Fetch From 'products' table 
+    // async function fetchRelatedProducts() {
+    //   if (productData) {
+    //     const { data: relatedData } = await supabase
+    //       .from("products")
+    //       .select("*")
+    //       .eq("category_id", productData.category_id)
+    //       .neq("id", productData.id)
+    //       .limit(6);
+    //       setRelated(relatedData || []);
         
-        }
-      }
-      fetchRelatedProducts();
+    //     }
+    //   }
+    //   fetchRelatedProducts();
+  
+  // fetch depending on 'product_categories' table
+  async function fetchRelatedProductsId() {
+  if (!productData) return;
+  //step 1 get the category id of the current product
+  const {data:catId,error:catError}= await supabase.from('product_categories').select('category_id').eq('product_id',productData.id);
+  if(catError){
+    console.log(catError);
+    return;
+  }
+  // Step 2: Get related product IDs from the same category, excluding current product
+  const { data: relatedIds, error: idsError } = await supabase
+    .from('product_categories')
+    .select('product_id')
+    .eq('category_id', catId[0].category_id)
+    .neq('product_id', productData.id)
+    .limit(8);
+
+  if (idsError) {
+    console.error("Error fetching related IDs:", idsError);
+    return;
+  }
+  console.log(relatedIds);
+  if (relatedIds?.length) {
+    const relatedIdsArr = relatedIds.map(item => item.product_id);
+    console.log(relatedIdsArr);
+    // Step 3: Get product details from 'products' table
+    const { data: relatedProducts, error: productsError } = await supabase
+      .from('products')
+      .select('*')
+      .in('id', relatedIdsArr);
+
+    if (productsError) {
+      console.error("Error fetching related products:", productsError);
+      return;
+    }
+
+    setRelated(relatedProducts || []);
+  } else {
+    setRelated([]); // No related IDs found
+  }
+}
+    fetchRelatedProductsId();
   }, [productData]);
 
   const sliderSettings = {
@@ -103,7 +147,7 @@ function ProductDetailsModal({ productId, product, onClose }) {
         className="bg-black opacity-50 absolute inset-0"
         onClick={onClose}
       ></div>
-      <div className="bg-white rounded-sm max-h-[90vh] overflow-auto p-6 max-w-4xl w-full relative products-modal">
+      <div className="bg-white rounded-sm max-h-[90vh] overflow-y-auto overflow-x-hidden p-6 max-w-4xl w-full relative products-modal">
         {/* Close Button */}
         <button
           onClick={onClose}
