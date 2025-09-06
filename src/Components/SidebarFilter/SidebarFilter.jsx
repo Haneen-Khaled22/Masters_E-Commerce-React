@@ -25,7 +25,7 @@ function SidebarFilter({ filters, setFilters }) {
   }, []);
 
   return (
-    <div className="w-1/4 p-4 sticky top-0 mb-12">
+    <div className="w-full p-4 mb-12">
       {/* Categories */}
       <h3 className="font-bold mb-4">PRODUCT CATEGORIES</h3>
       {categories.map((cat) => (

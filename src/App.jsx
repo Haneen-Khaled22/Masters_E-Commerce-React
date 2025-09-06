@@ -26,6 +26,7 @@ import CategoryDetails from './Components/CategoryDetails/CategoryDetails';
 import ProductDetailsModal from './Components/ProductDetails/ProductDetails';
 import { LanguageProvider } from './Context/LanguageContext';
 import Wishlist from './Components/WishList/wishlist';
+import { WishListProvider } from './Context/WishListContext';
 
 function App() {
   let router = createBrowserRouter([
@@ -56,9 +57,11 @@ function App() {
     <>
       <AuthProvider>
         <CartProvider>
+          <WishListProvider>
           <LanguageProvider>
           <RouterProvider router={router} />
           </LanguageProvider>
+          </WishListProvider>
           <Toaster />
         </CartProvider>
       </AuthProvider>
