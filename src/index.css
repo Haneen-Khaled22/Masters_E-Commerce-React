@@ -1,15 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Dosis:wght@600&family=Inter:wght@400&display=swap");
 
+button {
+  cursor: pointer;
+}
 .footerContainer {
   padding-inline: 112px;
   margin-inline: auto;
 }
 
-
 /*products modal scrollbar adjustment*/
-.products-modal{
+.products-modal {
   scrollbar-width: thin;
-  scrollbar-color: #35AFA0 transparent;
+  scrollbar-color: #35afa0 transparent;
 }
 
 .products-modal::-webkit-scrollbar {
@@ -21,6 +23,6 @@
 }
 
 .products-modal::-webkit-scrollbar-thumb {
-  background-color: #35AFA0;
+  background-color: #35afa0;
   border-radius: 10px;
 }
