@@ -6,6 +6,9 @@ import Zoom from "react-medium-image-zoom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "react-medium-image-zoom/dist/styles.css";
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
+import Slider from 'react-slick';
 
 
 function ProductDetailsModal({ productId, product, onClose }) {
@@ -53,6 +56,38 @@ function ProductDetailsModal({ productId, product, onClose }) {
       fetchRelatedProducts();
   }, [productData]);
 
+  const sliderSettings = {
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 3,
+    autoplay: true,
+    arrows:true,
+    responsive: [
+    {
+      breakpoint: 1280, // screens < 1280px
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 2,
+      },
+    },
+    {
+      breakpoint: 1024, // screens < 1024px
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 1,
+      },
+    },
+    {
+      breakpoint: 640, // screens < 640px (mobile)
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: true, // optional (cleaner on mobile)
+      },
+    },
+  ],
+  };
   if (loading) {
     return <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
       <span className="loader"></span>
@@ -186,7 +221,7 @@ function ProductDetailsModal({ productId, product, onClose }) {
             <h3 className="text-base sm:text-lg md:text-xl font-bold mb-4">
               Related Products
             </h3>
-            <div className="grid grid-cols-4 md:grid-cols-6 gap-4">
+            <Slider {...sliderSettings} className='w-full px-2'>
               {related.map((r) => (
                 <div
                   key={r.id}
@@ -225,7 +260,7 @@ function ProductDetailsModal({ productId, product, onClose }) {
                   </div>
                 </div>
               ))}
-            </div>
+            </Slider>
           </div>
         )}
       </div>

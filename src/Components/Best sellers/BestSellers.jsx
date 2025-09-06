@@ -18,7 +18,7 @@ function BestSellers() {
     
 
     
-     var settings = {
+    const settings = {
    
     infinite: true,
     speed: 500,
