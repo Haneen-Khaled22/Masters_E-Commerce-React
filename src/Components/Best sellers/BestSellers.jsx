@@ -93,14 +93,14 @@ function BestSellers() {
           <span className="loader"></span>
         </div>
       ) : (
-        <div className="best-sellers-slider border border-gray-200 p-4 rounded-lg">
+        <div className="best-sellers-slider  p-4 rounded-lg">
           <Splide options={splideOptions} className="custom-splide w-full px-1 z-index-10">
             {bestSellers.map((p, index) => (
               <SplideSlide key={p.id}>
                 <div
                   onClick={() => setSelectedProduct(p)}
                   className={` cursor-pointer bg-white relative flex flex-col h-[350px] px-3 py-3 justify-between w-full
-                    ${index !== bestSellers.length - 1 ? "border-r border-gray-200" : ""}`}
+                    ${index !== bestSellers.length - 1 ? "border border-gray-200" : "border-t border-b border-gray-200"}`}
                 >
                   {/* خصم */}
                   {p.offer && (

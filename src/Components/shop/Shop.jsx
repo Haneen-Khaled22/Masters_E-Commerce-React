@@ -123,12 +123,12 @@ function Shop() {
     </p>
   </div>
 ) :(
-          <div className="grid gap-0 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 border border-gray-200 rounded-lg">
+          <div className="grid gap-0 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  rounded-lg">
             {products.map((p) => (
               <div
                 key={p.id}
                 className="bg-white relative flex flex-col h-[400px] py-5 px-3 pt-5 cursor-pointer 
-             justify-between border-r border-b border-gray-200"
+             justify-between border border-gray-200"
               >
                 {p.discount_price && (
                   <div className="absolute top-4 left-2 bg-[#35AFA0] text-white text-xs font-bold px-2 py-1 rounded">
