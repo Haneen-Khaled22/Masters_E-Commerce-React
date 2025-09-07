@@ -100,8 +100,8 @@ body {
   justify-content: center;
   background: white !important;
   border-radius: 50% !important;
-  width: 35px !important;
-  height: 35px !important;
+  /* width: 35px !important;
+  height: 35px !important; */
   z-index: 50 !important;
 }
 
