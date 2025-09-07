@@ -93,7 +93,7 @@ function BestSellers() {
           <span className="loader"></span>
         </div>
       ) : (
-        <div className="best-sellers-slider  p-4 rounded-lg">
+        <div className="best-sellers-slider  rounded-lg">
           <Splide options={splideOptions} className="custom-splide w-full px-1 z-index-10">
             {bestSellers.map((p, index) => (
               <SplideSlide key={p.id}>
