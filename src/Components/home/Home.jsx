@@ -25,7 +25,7 @@ function Home() {
     // <div>home</div>
     <div>
       <HomeSlider />
-      <div className="mt-5 flex container justify-center">
+      <div className="mt-5 flex container ">
         <div className="w-1/4  hidden lg:block">
           {/* {panners} */}
           <div className="relative w-3/4 h-[400px] mt-4 mb-6">
