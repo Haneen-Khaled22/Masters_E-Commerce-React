@@ -38,9 +38,10 @@ function Shop() {
       }
 
       if (filters.availability === "in") {
-        query = query.eq("in_stock", true);
+        query = query.gt("stock", 0);
       } else if (filters.availability === "out") {
-        query = query.eq("in_stock", false);
+        query = query.eq("stock", 0);
+        
       }
 
       if (filters.minPrice) {
@@ -115,7 +116,13 @@ function Shop() {
           <div className="flex justify-center items-center min-h-screen">
             <span className="loader"></span>
           </div>
-        ) : (
+        ) :  products.length === 0 && filters.availability === "out" ? (
+  <div className="flex justify-center items-center min-h-[200px] w-full">
+    <p className="text-gray-500 text-lg font-semibold">
+      No products found
+    </p>
+  </div>
+) :(
           <div className="grid gap-0 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 border border-gray-200 rounded-lg">
             {products.map((p) => (
               <div

@@ -129,8 +129,9 @@ function SidebarFilter({ filters, setFilters }) {
         <input
           type="radio"
           name="availability"
+          value="in"
           checked={filters.availability === "in"}
-          onChange={() => setFilters({ ...filters, availability: "in" })}
+          onChange={(e) => setFilters({ ...filters, availability: e.target.value })}
         />
         <span className="ml-2 text-[#71778E]">In Stock</span>
       </label>
@@ -139,8 +140,9 @@ function SidebarFilter({ filters, setFilters }) {
         <input
           type="radio"
           name="availability"
+          value="out"
           checked={filters.availability === "out"}
-          onChange={() => setFilters({ ...filters, availability: "out" })}
+          onChange={(e) => setFilters({ ...filters, availability: e.target.value })}
         />
         <span className="ml-2 text-[#71778E]">Out of Stock</span>
       </label>
