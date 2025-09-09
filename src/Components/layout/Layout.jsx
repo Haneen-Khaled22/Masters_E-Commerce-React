@@ -18,9 +18,9 @@ function Layout() {
     return (
        <div >
         <ScrollToTop/>
-  <FirstNavbar />
+ 
     <div className="sticky top-0 z-50">
-  
+   <FirstNavbar />
   <NavBar searchTerm={searchTerm} setsearchTerm={setsearchTerm} />
   <LastNavbar />
 </div>
