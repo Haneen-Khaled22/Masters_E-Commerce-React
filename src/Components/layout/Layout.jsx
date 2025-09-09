@@ -6,6 +6,7 @@ import FirstNavbar from '../first Navbar/FirstNavbar'
 import Footer from '../footer/Footer'
 import LastNavbar from '../last Navbar/LastNavbar'
 import ScrollToTop from '../ScrollToTop/ScrollToTop'
+import ScrollToTopButton from '../ScrollToTopButton/ScrollToTopButton'
 
 
 function Layout() {
@@ -17,9 +18,9 @@ function Layout() {
     return (
        <div >
         <ScrollToTop/>
-  
-    <div className="sticky top-0 z-50">
   <FirstNavbar />
+    <div className="sticky top-0 z-50">
+  
   <NavBar searchTerm={searchTerm} setsearchTerm={setsearchTerm} />
   <LastNavbar />
 </div>
@@ -28,6 +29,7 @@ function Layout() {
   <div >
     <Outlet context={{searchTerm}}/>
   </div>
+  <ScrollToTopButton />
 
   <Footer />
 </div>

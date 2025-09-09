@@ -9,7 +9,7 @@ function FirstNavbar() {
   const [open, setOpen] = useState(false);
   return (
     <div>
-      <nav className="bg-white border-gray-200 dark:bg-gray-900 dark:text-white px-10 py-2">
+      <nav className="bg-white border-gray-200 dark:bg-gray-900 dark:text-white px-10 py-1">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-1 ">
           <div>
             <ul className="flex space-x-6 text-sm font-normal ">

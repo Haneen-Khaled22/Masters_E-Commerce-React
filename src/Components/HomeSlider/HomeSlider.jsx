@@ -59,7 +59,7 @@ function HomeSlider() {
       
       <p className="mt-2 sm:mt-3 mb-1 sm:mb-2 text-sm sm:text-base">Only this week ,Don't miss..</p>
       <h2 className="text-base sm:text-lg md:text-xl">from <span className="text-base sm:text-lg md:text-xl text-[#D51243] font-bold">$7.99</span></h2>
-      <button className="flex items-center gap-2 mt-2 sm:mt-3 bg-[#35AFA0] text-white px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 md:py-3 cursor-pointer rounded-full w-28 sm:w-32 md:w-35 hover:bg-[#5CC0B3] transition text-sm sm:text-base">Shop Now 
+      <button onClick={navigateToShop} className="flex items-center gap-2 mt-2 sm:mt-3 bg-[#35AFA0] text-white px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 md:py-3 cursor-pointer rounded-full w-28 sm:w-32 md:w-35 hover:bg-[#5CC0B3] transition text-sm sm:text-base">Shop Now 
         <span>  <i className="fa-solid fa-arrow-right "></i></span>
       </button>
     </div>
@@ -74,7 +74,7 @@ function HomeSlider() {
       
       <p className="mt-2 sm:mt-3 mb-1 sm:mb-2 text-sm sm:text-base">Only this week ,Don't miss..</p>
       <h2 className="text-base sm:text-lg md:text-xl">from <span className="text-base sm:text-lg md:text-xl text-[#D51243] font-bold">$7.99</span></h2>
-      <button className="flex items-center gap-2 mt-2 sm:mt-3 bg-[#35AFA0] text-white px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 md:py-3 cursor-pointer rounded-full w-28 sm:w-32 md:w-35 hover:bg-[#5CC0B3] transition text-sm sm:text-base">Shop Now 
+      <button onClick={navigateToShop}  className="flex items-center gap-2 mt-2 sm:mt-3 bg-[#35AFA0] text-white px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 md:py-3 cursor-pointer rounded-full w-28 sm:w-32 md:w-35 hover:bg-[#5CC0B3] transition text-sm sm:text-base">Shop Now 
         <span>  <i className="fa-solid fa-arrow-right "></i></span>
       </button>
     </div>

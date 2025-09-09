@@ -43,7 +43,7 @@ function NavBar({ searchTerm, setsearchTerm }) {
             href="#"
             className="flex items-center space-x-3 rtl:space-x-reverse"
           >
-            <img src={logo} className="h-12" alt="Logo" />
+            <img src={logo} className="h-10" alt="Logo" />
           </a>
 
           {/* Center: Search */}

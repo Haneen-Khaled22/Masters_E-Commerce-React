@@ -22,7 +22,7 @@ function LastNavbar() {
         <div className="relative">
           <button
             onClick={() => setOpen(!open)}
-            className="px-3 py-2 bg-[#35AFA0] text-white flex items-center gap-1 rounded-2xl cursor-pointer"
+            className="px-3 py-1 bg-[#35AFA0] text-white flex items-center gap-1 rounded-2xl cursor-pointer"
           >
             <i className="fas fa-bars text-md"></i>
             <span>ALL CATEGORIES</span>
