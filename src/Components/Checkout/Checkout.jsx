@@ -61,6 +61,7 @@ function Checkout() {
     } else {
       setLoading(false);
     }
+    
   }, [cart]);
 
   const subtotal = total;
@@ -215,7 +216,10 @@ function Checkout() {
         </div>
 
         {/* RIGHT SIDE - ORDER SUMMARY */}
-        <div className="space-y-6">
+              <div>
+                <div className="text-2xl font-semibold text-gray-800">Your Cart</div>
+        {cart.length > 0? <div className="space-y-6">
+       
           {
           allProducts?.map((product) => {
             const cartItem = cart.find((item) => item.id === product.id);
@@ -282,7 +286,10 @@ function Checkout() {
               <span>Including $2.46 in taxes</span>
             </div>
           </div>
-        </div>
+        </div>: <div className=" mt-12">No products in the cart yet</div>}
+
+              </div>
+                 
       </div>
     </div>
   );
