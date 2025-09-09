@@ -331,7 +331,7 @@ function ProductDetailsModal({ productId, product, onClose }) {
                 ))}
               </Splide>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-4 ">
                 {related.map((r) => (
                   <div
                     key={r.id}
